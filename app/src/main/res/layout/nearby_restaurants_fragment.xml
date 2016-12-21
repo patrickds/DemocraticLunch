@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/content_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="patrickds.github.democraticlunch.nearbyrestaurants.NearbyRestaurantsFragment"
+    tools:showIn="@layout/nearby_restaurants_activity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/nearby_restaurants_list"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+
+</android.support.v4.widget.SwipeRefreshLayout>
