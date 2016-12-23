@@ -6,11 +6,16 @@ import retrofit2.http.Query
 
 interface IGoogleWebService {
 
+    @GET("/maps/api/place/details/json?")
+    fun getById(
+            @Query("key") key: String,
+            @Query("placeid") id: String): Observable<PlaceResult>
+
     @GET("/maps/api/place/search/json?")
     fun getNearbyPlaces(
-        @Query("key") key: String,
-        @Query("location") location: String,
-        @Query("radius") radius: Int,
-        @Query("sensor") sensor: Boolean,
-        @Query("type") type: String): Observable<PlacesResult>
+            @Query("key") key: String,
+            @Query("location") location: String,
+            @Query("radius") radius: Int,
+            @Query("sensor") sensor: Boolean,
+            @Query("type") type: String): Observable<PlacesResult>
 }

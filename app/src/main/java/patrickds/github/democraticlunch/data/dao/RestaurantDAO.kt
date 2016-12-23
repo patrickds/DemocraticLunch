@@ -1,9 +1,9 @@
-package patrickds.github.democraticlunch.data.entities
+package patrickds.github.democraticlunch.data.dao
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class RestaurantRealm() : RealmObject() {
+open class RestaurantDAO() : RealmObject() {
 
     @PrimaryKey
     lateinit var id: String

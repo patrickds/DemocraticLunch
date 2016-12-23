@@ -9,5 +9,6 @@ import patrickds.github.democraticlunch.restaurant_election.FinishElectionServic
         modules = arrayOf(RestaurantElectionModule::class),
         dependencies = arrayOf(DemocraticLunchApplicationComponent::class))
 interface RestaurantElectionComponent {
+
     fun inject(finishElectionService: FinishElectionService)
 }

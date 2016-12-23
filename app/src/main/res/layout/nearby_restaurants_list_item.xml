@@ -23,6 +23,15 @@
             android:src="@drawable/restaurant"/>
 
         <TextView
+            android:id="@+id/restaurant_already_chosen_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="This restaurant was already chosen this week"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/restaurant_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

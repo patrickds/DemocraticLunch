@@ -4,7 +4,8 @@ class Restaurant(
         var id: String,
         var name: String,
         var votes: Int,
-        var isVoted: Boolean = false) {
+        var isVoted: Boolean = false,
+        var wasSelectedThisWeek: Boolean = false) {
 
     fun vote() {
         if (isVoted) {

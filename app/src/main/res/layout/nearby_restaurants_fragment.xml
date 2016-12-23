@@ -10,9 +10,39 @@
     tools:context="patrickds.github.democraticlunch.nearby_restaurants.NearbyRestaurantsFragment"
     tools:showIn="@layout/nearby_restaurants_activity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/nearby_restaurants_list"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3">
+
+            <TextView
+                android:id="@+id/last_chosen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last chosen"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/last_chosen_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/last_chosen"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/nearby_restaurants_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"/>
+
+    </LinearLayout>
+
 
 </android.support.v4.widget.SwipeRefreshLayout>

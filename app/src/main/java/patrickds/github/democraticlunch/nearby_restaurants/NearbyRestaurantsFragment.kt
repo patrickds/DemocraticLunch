@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.nearby_restaurants_fragment.*
 import kotlinx.android.synthetic.main.nearby_restaurants_fragment.view.*
 import patrickds.github.democraticlunch.R
 import patrickds.github.democraticlunch.application.DemocraticLunchApplication
@@ -45,7 +46,10 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
         _nearbyRestaurantsList.adapter = _nearbyRestaurantsAdapter
 
         _swipeRefreshLayout = view as SwipeRefreshLayout
-        _swipeRefreshLayout.setOnRefreshListener { _presenter.loadNearbyRestaurants() }
+        _swipeRefreshLayout.setOnRefreshListener {
+            _presenter.loadNearbyRestaurants()
+            _presenter.loadLastChosenRestaurant()
+        }
 
         return view
     }
@@ -77,8 +81,16 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
         _swipeRefreshLayout.isRefreshing = false
     }
 
+    override fun showLastChosenRestaurant(restaurant: Restaurant) {
+        last_chosen_name.text = restaurant.name
+    }
+
     override fun showError(message: String) {
         _swipeRefreshLayout.isRefreshing = false
         view.showLongSnackBar(message)
+    }
+
+    override fun showErrorOnLastChosenRestaurant() {
+        view.showLongSnackBar("Error downloading last chosen restaurant data")
     }
 }

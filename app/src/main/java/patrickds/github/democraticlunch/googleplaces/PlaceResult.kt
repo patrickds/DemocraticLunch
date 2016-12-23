@@ -1,8 +1,6 @@
 package patrickds.github.democraticlunch.googleplaces
 
-class PlacesResult {
-
+class PlaceResult {
     var status: String? = null
-    var results: List<GooglePlaceDAO>? = null
+    var result: GooglePlaceDAO? = null
 }
-
