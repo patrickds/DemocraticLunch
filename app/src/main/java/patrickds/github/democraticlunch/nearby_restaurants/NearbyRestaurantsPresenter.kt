@@ -8,6 +8,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetLas
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetNearbyRestaurants
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.ListenForVotingUpdates
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VerifyVotingStatus
+import timber.log.Timber
 import javax.inject.Inject
 
 class NearbyRestaurantsPresenter @Inject constructor(
@@ -27,6 +28,10 @@ class NearbyRestaurantsPresenter @Inject constructor(
         listenForVotingUpdates()
     }
 
+    override fun stop() {
+        _subscriptions.clear()
+    }
+
     override fun verifyVotingStatus() {
         val subscription = _verifyVotingStatus.execute()
                 .subscribeOn(Schedulers.io())
@@ -38,6 +43,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
                     }
                 }, { error ->
                     _view.showError(error.message!!)
+                    Timber.e(error)
                 })
 
         _subscriptions.add(subscription)
@@ -51,13 +57,10 @@ class NearbyRestaurantsPresenter @Inject constructor(
                     _view.updateVotes(value)
                 }, { error ->
                     _view.showError(error.message!!)
+                    Timber.e(error)
                 })
 
         _subscriptions.add(subscription)
-    }
-
-    override fun stop() {
-        _subscriptions.clear()
     }
 
     override fun loadNearbyRestaurants() {
@@ -72,6 +75,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
                     _view.showRestaurant(next)
                 }, { error ->
                     _view.showError(error.message!!)
+                    Timber.e(error)
                 }, {
                     _view.finishRefreshing()
                 })
@@ -87,6 +91,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
                     _view.showLastChosenRestaurant(next)
                 }, { error ->
                     _view.showErrorOnLastChosenRestaurant()
+                    Timber.e(error)
                 })
 
         _subscriptions.add(subscription)

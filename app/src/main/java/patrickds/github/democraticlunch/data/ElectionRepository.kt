@@ -63,10 +63,15 @@ class ElectionRepository
 
                         if (snapshot.hasChildren() && snapshot.childrenCount > 0) {
 
+                            val now = LocalDate.now()
+                            val firstDayOfWeek = now.minusDays(now.dayOfWeek)
+
                             val elections = snapshot.children.map {
                                 val electionDAO = it.getValue(ElectionDAO::class.java)
                                 val date = LocalDate.parse(electionDAO.date, DateTimeFormat.mediumDate())
                                 Election(date, electionDAO.id)
+                            }.filter {
+                                it.date > firstDayOfWeek
                             }
 
                             emitter.onNext(elections)

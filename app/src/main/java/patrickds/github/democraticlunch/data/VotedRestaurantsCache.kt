@@ -6,7 +6,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaura
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantsDataSource
 import javax.inject.Inject
 
-class VotedRestaurantsRealmDataSource @Inject constructor() : IVotedRestaurantsDataSource {
+class VotedRestaurantsCache @Inject constructor() : IVotedRestaurantsDataSource {
 
     override fun insertOrUpdate(restaurant: Restaurant) {
         val realm = Realm.getDefaultInstance()

@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import patrickds.github.democraticlunch.data.ElectionRepository
 import patrickds.github.democraticlunch.data.VotingRepository
-import patrickds.github.democraticlunch.data.VotedRestaurantsRealmDataSource
+import patrickds.github.democraticlunch.data.VotedRestaurantsCache
 import patrickds.github.democraticlunch.data.RestaurantRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
@@ -15,7 +15,7 @@ import patrickds.github.democraticlunch.restaurant_election.domain.repositories.
 class RepositoryModule {
     @Provides
     @ApplicationScope
-    fun votedRestaurantRepository(votedRestaurantRepository: VotedRestaurantsRealmDataSource): IVotedRestaurantsDataSource {
+    fun votedRestaurantRepository(votedRestaurantRepository: VotedRestaurantsCache): IVotedRestaurantsDataSource {
         return votedRestaurantRepository
     }
 

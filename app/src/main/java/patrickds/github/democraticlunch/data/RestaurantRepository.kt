@@ -1,6 +1,7 @@
 package patrickds.github.democraticlunch.data
 
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import patrickds.github.democraticlunch.BuildConfig
 import patrickds.github.democraticlunch.extensions.LocationExtensions.formatToApi
 import patrickds.github.democraticlunch.googleplaces.IGoogleWebService
@@ -28,7 +29,25 @@ class RestaurantRepository @Inject constructor(
     }
 
     override fun getNearest(radius: Int): Observable<Restaurant> {
-        return getNearby(radius)
+        return Observable.create<Restaurant> { emitter ->
+
+            _electionRepository.getWeekElections()
+                    .defaultIfEmpty(listOf())
+                    .observeOn(Schedulers.io())
+                    .subscribe { elections ->
+                        getNearby(radius)
+                                .observeOn(Schedulers.io())
+                                .subscribe({ restaurant ->
+                                    val wasElectedThisWeek = elections.any { it.restaurantId == restaurant.id }
+                                    restaurant.wasSelectedThisWeek = wasElectedThisWeek
+                                    emitter.onNext(restaurant)
+                                }, { error ->
+                                    emitter.onError(error)
+                                }, {
+                                    emitter.onComplete()
+                                })
+                    }
+        }
     }
 
     fun getNearby(radius: Int): Observable<Restaurant> {
