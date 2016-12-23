@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="patrickds.github.democraticlunch.nearbyrestaurants.NearbyRestaurantsActivity">
+    tools:context="patrickds.github.democraticlunch.nearby_restaurants.NearbyRestaurantsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

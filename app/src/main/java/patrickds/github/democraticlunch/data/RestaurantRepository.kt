@@ -3,12 +3,12 @@ package patrickds.github.democraticlunch.data
 import io.reactivex.Observable
 import patrickds.github.democraticlunch.BuildConfig
 import patrickds.github.democraticlunch.extensions.LocationExtensions.formatToApi
+import patrickds.github.democraticlunch.googleplaces.IGoogleWebService
 import patrickds.github.democraticlunch.location.LocationService
-import patrickds.github.democraticlunch.nearbyrestaurants.domain.model.Restaurant
-import patrickds.github.democraticlunch.nearbyrestaurants.domain.repositories.IRestaurantRepository
-import patrickds.github.democraticlunch.nearbyrestaurants.domain.repositories.IVoteRepository
-import patrickds.github.democraticlunch.nearbyrestaurants.domain.repositories.IVotedRestaurantRepository
-import patrickds.github.democraticlunch.network.IGoogleWebService
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
+import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVoteRepository
+import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantRepository
 import javax.inject.Inject
 
 class RestaurantRepository @Inject constructor(
@@ -36,5 +36,9 @@ class RestaurantRepository @Inject constructor(
                     val isVoted = _votedRestaurantRepository.getIsVoted(id)
                     Restaurant(id, name, votes, isVoted)
                 }
+    }
+
+    override fun clearVoteCache() {
+        _votedRestaurantRepository.clear()
     }
 }

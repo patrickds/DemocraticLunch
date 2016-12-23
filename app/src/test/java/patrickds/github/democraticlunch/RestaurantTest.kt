@@ -2,7 +2,7 @@ package patrickds.github.democraticlunch
 
 import org.junit.Assert.*
 import org.junit.Test
-import patrickds.github.democraticlunch.nearbyrestaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 
 class RestaurantTest {
 

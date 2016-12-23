@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    tools:context="patrickds.github.democraticlunch.nearbyrestaurants.NearbyRestaurantsFragment"
+    tools:context="patrickds.github.democraticlunch.nearby_restaurants.NearbyRestaurantsFragment"
     tools:showIn="@layout/nearby_restaurants_activity">
 
     <android.support.v7.widget.RecyclerView
