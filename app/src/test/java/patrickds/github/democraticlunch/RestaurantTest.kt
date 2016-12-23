@@ -8,7 +8,7 @@ class RestaurantTest {
 
     @Test
     fun voteInRestaurant() {
-        val restaurant = Restaurant("10", "Outback", 1, false)
+        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", 1, false)
 
         restaurant.vote()
         assertEquals(2, restaurant.votes)
@@ -18,7 +18,7 @@ class RestaurantTest {
     @Test
     fun canVote_restaurantAlreadyVotedToday_returnsFalse() {
 
-        val restaurant = Restaurant("10", "Outback", 1, false)
+        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", 1, false)
         restaurant.vote()
 
         assertFalse(restaurant.canVote())

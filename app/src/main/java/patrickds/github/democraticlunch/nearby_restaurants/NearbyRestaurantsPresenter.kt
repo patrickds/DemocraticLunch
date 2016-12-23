@@ -22,6 +22,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
     private val _subscriptions = CompositeDisposable()
 
     override fun start() {
+        _view.showLoading()
         loadNearbyRestaurants()
         loadLastChosenRestaurant()
         verifyVotingStatus()
@@ -77,7 +78,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
                     _view.showError(error.message!!)
                     Timber.e(error)
                 }, {
-                    _view.finishRefreshing()
+                    _view.hideLoading()
                 })
 
         _subscriptions.add(subscription)

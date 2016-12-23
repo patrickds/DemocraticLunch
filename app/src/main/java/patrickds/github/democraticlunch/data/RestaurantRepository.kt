@@ -24,7 +24,11 @@ class RestaurantRepository @Inject constructor(
         return _googleWebService.getById(BuildConfig.GOOGLE_WEB_SERVICE_KEY, id)
                 .map {
                     val place = it!!.result!!
-                    Restaurant(place.place_id!!, place.name!!, 0, false)
+                    val name = place.name!!
+                    val address = place.vicinity!!
+                    val votes = 0
+                    val isVoted = _votedRestaurantsCache.getIsVoted(id)
+                    Restaurant(id, name, address, votes, isVoted)
                 }
     }
 
@@ -66,9 +70,10 @@ class RestaurantRepository @Inject constructor(
                 .map {
                     val id = it.place_id!!
                     val name = it.name!!
+                    val address = it.vicinity!!
                     val votes = 0
                     val isVoted = _votedRestaurantsCache.getIsVoted(id)
-                    Restaurant(id, name, votes, isVoted)
+                    Restaurant(id, name, address, votes, isVoted)
                 }
     }
 

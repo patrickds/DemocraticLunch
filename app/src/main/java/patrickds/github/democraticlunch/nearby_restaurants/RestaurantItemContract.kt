@@ -8,6 +8,7 @@ class RestaurantItemContract {
         fun disableVoting()
         fun showAlreadySelectedMessage()
         fun showRestaurantName(name: String)
+        fun showRestaurantAddress(address: String)
         fun showRestaurantVotes(votes: String)
 
         fun showVoteText()

@@ -17,6 +17,7 @@ class RestaurantItemPresenter
         _view.reset()
 
         _view.showRestaurantName(restaurant.name)
+        _view.showRestaurantAddress(restaurant.address)
         _view.showRestaurantVotes("Votes: ${restaurant.votes}")
 
         if (restaurant.isVoted)

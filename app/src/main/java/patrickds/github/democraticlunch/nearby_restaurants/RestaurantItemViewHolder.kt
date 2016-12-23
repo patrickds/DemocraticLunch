@@ -3,6 +3,7 @@ package patrickds.github.democraticlunch.nearby_restaurants
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.nearby_restaurants_list_item.view.*
+import patrickds.github.democraticlunch.R
 import patrickds.github.democraticlunch.data.VotedRestaurantsCache
 import patrickds.github.democraticlunch.data.VotingRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
@@ -13,6 +14,7 @@ class RestaurantItemViewHolder(val view: View) :
         RestaurantItemContract.View {
 
     private val _nameTextView by lazy { view.restaurant_name }
+    private val _addressTextView by lazy { view.restaurant_address }
     private val _votesTextView by lazy { view.restaurant_votes }
     private val _voteButton by lazy { view.vote_button }
     private val _restaurantAlreadyChosenTextView by lazy { view.restaurant_already_chosen_text }
@@ -37,11 +39,16 @@ class RestaurantItemViewHolder(val view: View) :
         _restaurantAlreadyChosenTextView.visibility = View.GONE
         _voteButton.visibility = View.VISIBLE
         _voteButton.isEnabled = true
+        _voteButton.setBackgroundResource(R.color.colorPrimary)
         view.isEnabled = true
     }
 
     override fun showRestaurantName(name: String) {
         _nameTextView.text = name
+    }
+
+    override fun showRestaurantAddress(address: String) {
+        _addressTextView.text = address
     }
 
     override fun showRestaurantVotes(votes: String) {
@@ -50,6 +57,7 @@ class RestaurantItemViewHolder(val view: View) :
 
     override fun disableVoting() {
         _voteButton.isEnabled = false
+        _voteButton.setBackgroundResource(R.color.colorPrimaryDisabled)
         view.isEnabled = false
     }
 
@@ -68,8 +76,6 @@ class RestaurantItemViewHolder(val view: View) :
 
     fun disable() {
         view.isEnabled = false
-        _voteButton.isEnabled = false
-        _nameTextView.isEnabled = false
-        _votesTextView.isEnabled = false
+        disableVoting()
     }
 }

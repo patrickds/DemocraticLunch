@@ -3,6 +3,7 @@ package patrickds.github.democraticlunch.nearby_restaurants.domain.model
 class Restaurant(
         var id: String,
         var name: String,
+        var address: String,
         var votes: Int,
         var isVoted: Boolean = false,
         var wasSelectedThisWeek: Boolean = false) {

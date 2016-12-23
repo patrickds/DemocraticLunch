@@ -82,12 +82,17 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
         _nearbyRestaurantsAdapter.updateVotes(votingUpdate)
     }
 
-    override fun finishRefreshing() {
+    override fun hideLoading() {
         _swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun showLoading() {
+        _swipeRefreshLayout.isRefreshing = true
     }
 
     override fun showLastChosenRestaurant(restaurant: Restaurant) {
         last_chosen_name.text = restaurant.name
+        last_chosen_address.text = restaurant.address
     }
 
     override fun disableVoting() {
