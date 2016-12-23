@@ -8,7 +8,9 @@ import android.view.MenuItem
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.android.synthetic.main.nearby_restaurants_activity.*
 import patrickds.github.democraticlunch.R
+import patrickds.github.democraticlunch.garbage.NotificationUtils
 import timber.log.Timber
 
 class NearbyRestaurantsActivity :
@@ -17,7 +19,6 @@ class NearbyRestaurantsActivity :
         GoogleApiClient.OnConnectionFailedListener {
 
     lateinit var googleApiClient: GoogleApiClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nearby_restaurants_activity)
@@ -30,6 +31,10 @@ class NearbyRestaurantsActivity :
 //                .addApi(LocationServices.API)
 //                .build()
 
+        fab.setOnClickListener {
+            NotificationUtils.pickWinner(this)
+//            NotificationUtils.remindUser(this)
+        }
     }
 
     override fun onStart() {

@@ -1,6 +1,5 @@
 package patrickds.github.democraticlunch.injection
 
-import com.facebook.stetho.okhttp3.BuildConfig
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import dagger.Module
 import dagger.Provides
@@ -24,7 +23,7 @@ class NetworkModule {
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .apply {
-                    if(BuildConfig.DEBUG)
+//                    if(BuildConfig.DEBUG)
                         addNetworkInterceptor(stethoInterceptor)
                 }
                 .build()

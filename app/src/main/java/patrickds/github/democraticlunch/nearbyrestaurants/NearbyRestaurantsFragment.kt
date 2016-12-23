@@ -39,7 +39,7 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
                 .build()
                 .inject(this)
 
-        _nearbyRestaurantsAdapter = NearbyRestaurantsAdapter(listOf())
+        _nearbyRestaurantsAdapter = NearbyRestaurantsAdapter(mutableListOf())
         _nearbyRestaurantsList = view.nearby_restaurants_list
         _nearbyRestaurantsList.layoutManager = LinearLayoutManager(activity)
         _nearbyRestaurantsList.adapter = _nearbyRestaurantsAdapter
@@ -61,8 +61,20 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
     }
 
     override fun showNearbyRestaurants(restaurants: List<Restaurant>) {
+//        _swipeRefreshLayout.isRefreshing = false
+//        _nearbyRestaurantsAdapter.replaceData(restaurants)
+    }
+
+    override fun clearItems() {
+        _nearbyRestaurantsAdapter.clear()
+    }
+
+    override fun showRestaurant(restaurant: Restaurant) {
+        _nearbyRestaurantsAdapter.add(restaurant)
+    }
+
+    override fun finishRefreshing() {
         _swipeRefreshLayout.isRefreshing = false
-        _nearbyRestaurantsAdapter.replaceData(restaurants)
     }
 
     override fun showError(message: String){
