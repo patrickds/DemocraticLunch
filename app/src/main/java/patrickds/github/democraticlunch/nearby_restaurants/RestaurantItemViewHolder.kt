@@ -3,8 +3,8 @@ package patrickds.github.democraticlunch.nearby_restaurants
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.nearby_restaurants_list_item.view.*
-import patrickds.github.democraticlunch.data.RankingRepository
-import patrickds.github.democraticlunch.data.RealmRestaurantRepository
+import patrickds.github.democraticlunch.data.VotedRestaurantsRealmDataSource
+import patrickds.github.democraticlunch.data.VotingRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VoteOnRestaurant
 
@@ -23,7 +23,7 @@ class RestaurantItemViewHolder(val view: View) :
     init {
         _presenter = RestaurantItemPresenter(
                 this,
-                VoteOnRestaurant(RankingRepository(), RealmRestaurantRepository()))
+                VoteOnRestaurant(VotingRepository(), VotedRestaurantsRealmDataSource()))
     }
 
     fun bind(restaurant: Restaurant) {
@@ -65,5 +65,13 @@ class RestaurantItemViewHolder(val view: View) :
 
     override fun showUnVoteText() {
         _voteButton.text = "UNVOTE"
+    }
+
+    fun disable() {
+        view.isEnabled = false
+        _voteButton.isEnabled = false
+        _imageImageView.isEnabled = false
+        _nameTextView.isEnabled = false
+        _votesTextView.isEnabled = false
     }
 }

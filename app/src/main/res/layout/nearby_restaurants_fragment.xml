@@ -36,6 +36,16 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/election_already_ended_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="Today's election has already ended!"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/nearby_restaurants_list"
             android:layout_width="match_parent"

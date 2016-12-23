@@ -1,44 +1,38 @@
 package patrickds.github.democraticlunch.restaurant_election.domain.usecase
 
-import android.content.Context
 import org.joda.time.LocalDate
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Election
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
-import patrickds.github.democraticlunch.restaurant_election.NotificationUtils
-import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IRankingRepository
+import patrickds.github.democraticlunch.restaurant_election.RestaurantElectedNotification
+import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 import javax.inject.Inject
 
 class ChooseWinnerAndNotifyUser
 @Inject constructor(
-        private val _context: Context,
-        private val _rankingRepository: IRankingRepository,
+        private val _rankingRepository: IVotingRepository,
         private val _electionRepository: IElectionRepository,
-        private val _restaurantRepository: IRestaurantRepository) {
+        private val _restaurantRepository: IRestaurantRepository,
+        private val _notification: RestaurantElectedNotification) {
 
     fun execute() {
 
         val now = LocalDate.now()
         val today = now.dayOfYear
-        val yesterday = now.minusDays(1).dayOfYear
 
-        _rankingRepository.getElectionRankingByDay(today)
-                .subscribe { ranking ->
-                    if (ranking.hasEntries()) {
+        _rankingRepository.getVotingByDay(today)
+                .subscribe { voting ->
+                    if (voting.hasEntries()) {
 
-                        val winner = ranking.getWinner()
+                        val winner = voting.getWinner()
 
-                        val election = Election(now, winner.id)
+                        val election = Election(now, winner.restaurantId)
                         _electionRepository.insertOrUpdate(election)
 
-//                        val dayOfWeek = now.dayOfWeek().getAsText(Locale.ENGLISH)
-
-//                        _rankingRepository.addWeekWinner(winner.id, now.weekOfWeekyear, dayOfWeek)
-//                        _rankingRepository.endElection(today)
-//                        _rankingRepository.removeElectionByDay(yesterday)
+                        _rankingRepository.endVoting(today)
                         _restaurantRepository.clearVoteCache()
 
-                        NotificationUtils.remindUser(_context, "HEY I'M A WINNER YEY")
+                        _notification.show(winner.restaurantId)
                     }
                 }
     }

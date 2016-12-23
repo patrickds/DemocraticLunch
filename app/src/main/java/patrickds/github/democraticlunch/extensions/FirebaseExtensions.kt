@@ -21,4 +21,19 @@ object FirebaseExtensions {
             }
         })
     }
+
+    fun DatabaseReference.addValueListener(
+            onDataChanged: (snapshot: DataSnapshot) -> Unit,
+            onCancelled: (error: DatabaseError) -> Unit) {
+
+        addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                onCancelled(error)
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                onDataChanged(snapshot)
+            }
+        })
+    }
 }

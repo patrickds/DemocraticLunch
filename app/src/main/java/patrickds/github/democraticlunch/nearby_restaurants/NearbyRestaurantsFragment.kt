@@ -14,6 +14,7 @@ import patrickds.github.democraticlunch.R
 import patrickds.github.democraticlunch.application.DemocraticLunchApplication
 import patrickds.github.democraticlunch.extensions.ViewExtensions.showLongSnackBar
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUpdate
 import patrickds.github.democraticlunch.nearby_restaurants.injection.DaggerNearbyRestaurantsComponent
 import patrickds.github.democraticlunch.nearby_restaurants.injection.NearbyRestaurantsModule
 import javax.inject.Inject
@@ -77,12 +78,24 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
         _nearbyRestaurantsAdapter.add(restaurant)
     }
 
+    override fun updateVotes(votingUpdate: VotingUpdate) {
+        _nearbyRestaurantsAdapter.updateVotes(votingUpdate)
+    }
+
     override fun finishRefreshing() {
         _swipeRefreshLayout.isRefreshing = false
     }
 
     override fun showLastChosenRestaurant(restaurant: Restaurant) {
         last_chosen_name.text = restaurant.name
+    }
+
+    override fun disableVoting() {
+        _nearbyRestaurantsAdapter.disable()
+    }
+
+    override fun showElectionEndedMessage() {
+        election_already_ended_text_view.visibility = View.VISIBLE
     }
 
     override fun showError(message: String) {

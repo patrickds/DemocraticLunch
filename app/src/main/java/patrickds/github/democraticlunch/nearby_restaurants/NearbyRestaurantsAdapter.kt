@@ -5,9 +5,12 @@ import android.view.ViewGroup
 import patrickds.github.democraticlunch.R
 import patrickds.github.democraticlunch.extensions.ViewGroupExtensions.inflate
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUpdate
 
 class NearbyRestaurantsAdapter(var _restaurants: MutableList<Restaurant>) :
         RecyclerView.Adapter<RestaurantItemViewHolder>() {
+
+    private var _isEnable = true
 
     override fun getItemCount() = _restaurants.count()
 
@@ -19,6 +22,9 @@ class NearbyRestaurantsAdapter(var _restaurants: MutableList<Restaurant>) :
     override fun onBindViewHolder(holder: RestaurantItemViewHolder, position: Int) {
         val restaurant = _restaurants[position]
         holder.bind(restaurant)
+
+        if (!_isEnable)
+            holder.disable()
     }
 
     fun replaceData(restaurants: MutableList<Restaurant>) {
@@ -28,30 +34,27 @@ class NearbyRestaurantsAdapter(var _restaurants: MutableList<Restaurant>) :
 
     fun add(restaurant: Restaurant) {
         _restaurants.add(restaurant)
-
-//        FirebaseDatabase.getInstance()
-//                .reference
-//                .child("CurrentVoting")
-//                .child(restaurant.id)
-//                .addValueEventListener(object : ValueEventListener {
-//                    override fun onCancelled(p0: DatabaseError?) {
-//                    }
-//
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//
-//                        snapshot.value?.let {
-//                            val votes = it.toString().toInt()
-//                            restaurant.votes = votes;
-//                            notifyDataSetChanged()
-//                        }
-//                    }
-//                })
-
         notifyDataSetChanged()
     }
 
     fun clear() {
         _restaurants.clear()
         notifyDataSetChanged()
+    }
+
+    fun disable() {
+        _isEnable = false
+        notifyDataSetChanged()
+    }
+
+    fun updateVotes(votingUpdate: VotingUpdate) {
+        votingUpdate.entries.forEach { voteUpdate ->
+            _restaurants.find { it.id == voteUpdate.restaurantId }?.let {
+
+                it.votes = voteUpdate.votes
+                val index = _restaurants.indexOf(it)
+                notifyItemChanged(index)
+            }
+        }
     }
 }

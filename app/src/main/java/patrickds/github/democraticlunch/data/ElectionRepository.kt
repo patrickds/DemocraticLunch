@@ -51,4 +51,31 @@ class ElectionRepository
                     })
         }
     }
+
+    override fun getWeekElections(): Observable<List<Election>> {
+
+        return Observable.create<List<Election>> { emitter ->
+
+            FirebaseDatabase.getInstance()
+                    .reference
+                    .child(ELECTIONS_KEY)
+                    .addSingleValueListener({ snapshot ->
+
+                        if (snapshot.hasChildren() && snapshot.childrenCount > 0) {
+
+                            val elections = snapshot.children.map {
+                                val electionDAO = it.getValue(ElectionDAO::class.java)
+                                val date = LocalDate.parse(electionDAO.date, DateTimeFormat.mediumDate())
+                                Election(date, electionDAO.id)
+                            }
+
+                            emitter.onNext(elections)
+                        }
+
+                        emitter.onComplete()
+                    }, { error ->
+                        emitter.onError(error.toException())
+                    })
+        }
+    }
 }

@@ -7,4 +7,5 @@ interface IElectionRepository {
 
     fun insertOrUpdate(election: Election)
     fun getLastElection(): Observable<Election>
+    fun getWeekElections(): Observable<List<Election>>
 }

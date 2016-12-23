@@ -1,6 +1,7 @@
 package patrickds.github.democraticlunch.nearby_restaurants
 
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUpdate
 
 class NearbyRestaurantsContract {
 
@@ -12,6 +13,9 @@ class NearbyRestaurantsContract {
         fun clearItems()
         fun finishRefreshing()
         fun showErrorOnLastChosenRestaurant()
+        fun disableVoting()
+        fun showElectionEndedMessage()
+        fun updateVotes(votingUpdate: VotingUpdate)
     }
 
     interface Presenter {
@@ -19,5 +23,7 @@ class NearbyRestaurantsContract {
         fun stop()
         fun loadNearbyRestaurants()
         fun loadLastChosenRestaurant()
+        fun verifyVotingStatus()
+        fun listenForVotingUpdates()
     }
 }

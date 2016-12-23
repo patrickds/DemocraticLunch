@@ -6,30 +6,33 @@ import patrickds.github.democraticlunch.extensions.LocationExtensions.formatToAp
 import patrickds.github.democraticlunch.googleplaces.IGoogleWebService
 import patrickds.github.democraticlunch.location.LocationService
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
-import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantRepository
+import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantsDataSource
 import javax.inject.Inject
 
 class RestaurantRepository @Inject constructor(
         private val _googleWebService: IGoogleWebService,
-        private val _votedRestaurantRepository: IVotedRestaurantRepository,
+        private val _electionRepository: IElectionRepository,
+        private val _votedRestaurantsCache: IVotedRestaurantsDataSource,
         private val _locationService: LocationService)
     : IRestaurantRepository {
 
     override fun getById(id: String): Observable<Restaurant> {
-//        return Observable.just(Restaurant(id, id, 1))
 
-        return _googleWebService.getById(
-                BuildConfig.GOOGLE_WEB_SERVICE_KEY,
-                id)
+        return _googleWebService.getById(BuildConfig.GOOGLE_WEB_SERVICE_KEY, id)
                 .map {
                     val place = it!!.result!!
-
                     Restaurant(place.place_id!!, place.name!!, 0, false)
                 }
     }
 
     override fun getNearest(radius: Int): Observable<Restaurant> {
+        return getNearby(radius)
+    }
+
+    fun getNearby(radius: Int): Observable<Restaurant> {
+
         val PLACE_TYPE = "restaurant"
         val location = _locationService.getLastKnownLocation()
         val hasSensor = true
@@ -45,12 +48,12 @@ class RestaurantRepository @Inject constructor(
                     val id = it.place_id!!
                     val name = it.name!!
                     val votes = 0
-                    val isVoted = _votedRestaurantRepository.getIsVoted(id)
+                    val isVoted = _votedRestaurantsCache.getIsVoted(id)
                     Restaurant(id, name, votes, isVoted)
                 }
     }
 
     override fun clearVoteCache() {
-        _votedRestaurantRepository.clear()
+        _votedRestaurantsCache.clear()
     }
 }

@@ -3,10 +3,10 @@ package patrickds.github.democraticlunch.data
 import io.realm.Realm
 import patrickds.github.democraticlunch.data.dao.RestaurantDAO
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
-import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantRepository
+import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantsDataSource
 import javax.inject.Inject
 
-class RealmRestaurantRepository @Inject constructor() : IVotedRestaurantRepository {
+class VotedRestaurantsRealmDataSource @Inject constructor() : IVotedRestaurantsDataSource {
 
     override fun insertOrUpdate(restaurant: Restaurant) {
         val realm = Realm.getDefaultInstance()

@@ -3,54 +3,90 @@ package patrickds.github.democraticlunch.nearby_restaurants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.eVotingStatus
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetLastChosenRestaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetNearbyRestaurants
+import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.ListenForVotingUpdates
+import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VerifyVotingStatus
 import javax.inject.Inject
 
 class NearbyRestaurantsPresenter @Inject constructor(
-        private val view: NearbyRestaurantsContract.View,
-        private val getNearbyRestaurants: GetNearbyRestaurants,
-        private val getLastChosenRestaurant: GetLastChosenRestaurant)
+        private val _view: NearbyRestaurantsContract.View,
+        private val _getNearbyRestaurants: GetNearbyRestaurants,
+        private val _getLastChosenRestaurant: GetLastChosenRestaurant,
+        private val _verifyVotingStatus: VerifyVotingStatus,
+        private val _listenForVotingUpdates: ListenForVotingUpdates)
     : NearbyRestaurantsContract.Presenter {
 
     private val _subscriptions = CompositeDisposable()
 
     override fun start() {
-//        loadNearbyRestaurants()
-//        loadLastChosenRestaurant()
+        loadNearbyRestaurants()
+        loadLastChosenRestaurant()
+        verifyVotingStatus()
+        listenForVotingUpdates()
+    }
+
+    override fun verifyVotingStatus() {
+        val subscription = _verifyVotingStatus.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ value ->
+                    if (value == eVotingStatus.ENDED) {
+                        _view.disableVoting()
+                        _view.showElectionEndedMessage()
+                    }
+                }, { error ->
+                    _view.showError(error.message!!)
+                })
+
+        _subscriptions.add(subscription)
+    }
+
+    override fun listenForVotingUpdates() {
+        val subscription = _listenForVotingUpdates.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ value ->
+                    _view.updateVotes(value)
+                }, { error ->
+                    _view.showError(error.message!!)
+                })
+
+        _subscriptions.add(subscription)
     }
 
     override fun stop() {
-        _subscriptions.dispose()
+        _subscriptions.clear()
     }
 
     override fun loadNearbyRestaurants() {
 
-        view.clearItems()
+        _view.clearItems()
 
         val requestValues = GetNearbyRestaurants.RequestValues(1000)
-        val subscription = getNearbyRestaurants.execute(requestValues)
+        val subscription = _getNearbyRestaurants.execute(requestValues)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ next ->
-                    view.showRestaurant(next)
+                    _view.showRestaurant(next)
                 }, { error ->
-                    view.showError(error.message!!)
+                    _view.showError(error.message!!)
                 }, {
-                    view.finishRefreshing()
+                    _view.finishRefreshing()
                 })
 
         _subscriptions.add(subscription)
     }
 
     override fun loadLastChosenRestaurant() {
-        val subscription = getLastChosenRestaurant.execute()
+        val subscription = _getLastChosenRestaurant.execute()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ next ->
-                    view.showLastChosenRestaurant(next)
-                },{ error ->
-                    view.showErrorOnLastChosenRestaurant()
+                    _view.showLastChosenRestaurant(next)
+                }, { error ->
+                    _view.showErrorOnLastChosenRestaurant()
                 })
 
         _subscriptions.add(subscription)
