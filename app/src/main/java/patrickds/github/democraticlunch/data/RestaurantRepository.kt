@@ -2,6 +2,8 @@ package patrickds.github.democraticlunch.data
 
 import io.reactivex.Observable
 import patrickds.github.democraticlunch.BuildConfig
+import patrickds.github.democraticlunch.extensions.LocationExtensions.formatToApi
+import patrickds.github.democraticlunch.location.LocationService
 import patrickds.github.democraticlunch.nearbyrestaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearbyrestaurants.domain.repositories.IRestaurantRepository
 import patrickds.github.democraticlunch.nearbyrestaurants.domain.repositories.IVoteRepository
@@ -12,19 +14,20 @@ import javax.inject.Inject
 class RestaurantRepository @Inject constructor(
         private val _googleWebService: IGoogleWebService,
         private val _votedRestaurantRepository: IVotedRestaurantRepository,
-        private val _voteRepository: IVoteRepository) : IRestaurantRepository {
+        private val _voteRepository: IVoteRepository,
+        private val _locationService: LocationService) : IRestaurantRepository {
 
     override fun getNearest(radius: Int): Observable<Restaurant> {
-        val placeType = "restaurant"
-        val location = "-29.1882154,-51.2160719"
+        val PLACE_TYPE = "restaurant"
+        val location = _locationService.getLastKnownLocation()
         val hasSensor = true
 
         return _googleWebService.getNearbyPlaces(
                 BuildConfig.GOOGLE_WEB_SERVICE_KEY,
-                location,
+                location.formatToApi(),
                 radius,
                 hasSensor,
-                placeType)
+                PLACE_TYPE)
                 .switchMap { Observable.fromIterable(it.results!!) }
                 .map {
                     val id = it.id!!
