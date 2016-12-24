@@ -11,23 +11,21 @@ object NotificationUtils {
 
     fun schedule(context: Context) {
 
-        val myIntent = Intent(context, FinishElectionService::class.java)
-        val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-        val pendingIntent = PendingIntent.getService(context, 0, myIntent, 0)
+        val intent = Intent(context, FinishElectionService::class.java)
+        val pendingIntent = PendingIntent.getService(context, 0, intent, 0)
 
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 6)
-        calendar.set(Calendar.MINUTE, 16)
+        calendar.set(Calendar.HOUR_OF_DAY, 12)
+        calendar.set(Calendar.MINUTE, 30)
         calendar.set(Calendar.SECOND, 0)
 
-        val fiveMinutesMillis = 1 * 60 * 1000L
         val dayMillis = 24 * 60 * 60 * 1000L
+        val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
 
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
-                fiveMinutesMillis,
+                dayMillis,
                 pendingIntent)
     }
 }

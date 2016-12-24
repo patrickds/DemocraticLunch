@@ -9,6 +9,7 @@ import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
 import patrickds.github.democraticlunch.BuildConfig
 import patrickds.github.democraticlunch.application.injection.ContextModule
+import patrickds.github.democraticlunch.restaurant_election.NotificationUtils
 import timber.log.Timber
 
 class DemocraticLunchApplication : Application() {
@@ -23,7 +24,7 @@ class DemocraticLunchApplication : Application() {
 
         Realm.init(this)
         JodaTimeAndroid.init(this)
-//        NotificationUtils.schedule(this)
+        NotificationUtils.schedule(this)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
