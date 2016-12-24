@@ -15,9 +15,8 @@ Everything should work fine.
 
 ## Solution
 
-Basically the app downloads data from GoogleWebServices and presents to the user. When the user votes in a restaurant, this restaurant is cached in a Realm 
-database to know whether the user already voted or not in it, and the vote is pushed to firebase. All users receive the change and it updates the UI.
-A service is scheduled to run everyday at 12:30 p.m. The service gather the voting data from firebase and determines the restaurant elected. 
+Basically the app downloads data from GoogleWebServices and presents to the user. When the user votes in a restaurant, this restaurant is cached in a Realm database to know whether the user already voted or not in it, and the vote is pushed to firebase. All users receive the change and it updates the UI.
+A service scheduled to run everyday at 12:30 p.m. gather the voting data from firebase and determines the restaurant elected. 
 After that a notification is shown.
 
 I really focused writing good code and making a good and testable structure so I had no time for UI :(
@@ -27,7 +26,7 @@ I really focused writing good code and making a good and testable structure so I
 The approach taken was based on the [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) 
 presenter by [Robert C. Martin](http://blog.cleancoder.com/) with MVP pattern for presentation.
 
-This approach is a bit more verbose than usual but it makes the maintenance tasks very obvious and less error prone.
+This approach is a bit more verbose than usual but it makes the maintenance tasks very obvious and less error-prone.
 The main difference is the introduction of use cases, which are the very user's actions, between the presentation and the domain models thus encapsulating
 domain logic.
 
@@ -60,12 +59,11 @@ that gives a very good realiability and ease of development, Retrofit for easy R
 
 * The domain logic could be a little bit richier in some parts and not relying so much in the repository queries.
 
-* There is some logic realying in the UI being disabled and I don't like it. At least the logic is contained entirely in the presenters so it is hihgly testable, but I still don't like it.
+* There is some logic realying in the UI being disabled and I don't like it. At least the logic is contained entirely in the presenters so it is highly testable, but I still don't like it.
 
-* I think would be better to have an WebAPI to centralize the operations, like ending a voting, notifying the users, and keeping a better control of the dates since 
-the phone's dates aren't reliable.
+* I think would be better to have an WebAPI to centralize the operations, like ending a voting, notifying the users, and keeping a better control of the dates since the phone's dates aren't reliable.
 
-* There is new patter called MVI (Model View Intent) that could help making the UI more functional but I just read it briefly and don't know much about it.
+* There is a new patter called MVI (Model View Intent) that could help making the UI more functional but I just read it briefly and don't know much about it.
 
 ## TODOS
 
