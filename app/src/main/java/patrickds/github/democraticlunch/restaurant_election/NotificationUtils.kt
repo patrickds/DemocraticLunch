@@ -19,13 +19,13 @@ object NotificationUtils {
         calendar.set(Calendar.MINUTE, 30)
         calendar.set(Calendar.SECOND, 0)
 
-        val dayMillis = 24 * 60 * 60 * 1000L
+        val dayInMillis = 24 * 60 * 60 * 1000L
         val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
 
         alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
-                dayMillis,
+                dayInMillis,
                 pendingIntent)
     }
 }

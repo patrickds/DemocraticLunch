@@ -68,7 +68,9 @@ class NearbyRestaurantsPresenter @Inject constructor(
 
         _view.clearItems()
 
-        val requestValues = GetNearbyRestaurants.RequestValues(1000)
+        val fiveKmRadius = 5000
+        val requestValues = GetNearbyRestaurants.RequestValues(fiveKmRadius)
+
         val subscription = _getNearbyRestaurants.execute(requestValues)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
