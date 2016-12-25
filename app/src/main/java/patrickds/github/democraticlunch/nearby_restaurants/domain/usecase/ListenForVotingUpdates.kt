@@ -5,7 +5,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUp
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 import javax.inject.Inject
 
-class ListenForVotingUpdates
+open class ListenForVotingUpdates
 @Inject constructor(private val _votingRepository: IVotingRepository) {
 
     fun execute(): Observable<VotingUpdate> {

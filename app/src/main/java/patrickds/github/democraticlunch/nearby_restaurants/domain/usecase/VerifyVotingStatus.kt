@@ -6,7 +6,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.model.eVotingS
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 import javax.inject.Inject
 
-class VerifyVotingStatus
+open class VerifyVotingStatus
 @Inject constructor(private val _votingRepository: IVotingRepository) {
 
     fun execute(): Observable<eVotingStatus> {

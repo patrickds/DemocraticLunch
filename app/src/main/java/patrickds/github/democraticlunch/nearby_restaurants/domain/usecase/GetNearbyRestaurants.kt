@@ -5,7 +5,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaura
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
 import javax.inject.Inject
 
-class GetNearbyRestaurants
+open class GetNearbyRestaurants
 @Inject constructor(private val _restaurantRepository: IRestaurantRepository) {
 
     fun execute(requestValues: RequestValues): Observable<Restaurant> {
