@@ -7,7 +7,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.I
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
 import javax.inject.Inject
 
-class GetLastChosenRestaurant
+open class GetLastChosenRestaurant
 @Inject constructor(
         private val _electionRepository: IElectionRepository,
         private val _restaurantRepository: IRestaurantRepository) {
