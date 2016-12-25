@@ -1,4 +1,4 @@
-package patrickds.github.democraticlunch
+package patrickds.github.democraticlunch.nearby_restaurants.domain.model
 
 import org.junit.Assert.*
 import org.junit.Test
