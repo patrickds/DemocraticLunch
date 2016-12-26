@@ -9,34 +9,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.v7.app.NotificationCompat
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import patrickds.github.democraticlunch.R
 import patrickds.github.democraticlunch.nearby_restaurants.NearbyRestaurantsActivity
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
-import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
-import timber.log.Timber
 import javax.inject.Inject
 
-class RestaurantElectedNotification
-@Inject constructor(
-        private val _context: Context,
-        private val _restaurantRepository: IRestaurantRepository) {
+open class RestaurantElectedNotification
+@Inject constructor(private val _context: Context) {
 
     val NOTIFICATION_ID = 3000
     val PENDING_INTENT_ID = 4000
-
-    fun show(restaurantId: String) {
-
-        _restaurantRepository.getById(restaurantId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ restaurant ->
-                    notify(restaurant)
-                }, { error ->
-                    Timber.e(error)
-                })
-    }
 
     fun notify(restaurant: Restaurant) {
 

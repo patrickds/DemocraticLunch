@@ -17,9 +17,7 @@ class ElectionRepository
 
     override fun insertOrUpdate(election: Election) {
 
-        val electionDao = ElectionDAO(election.restaurantId,
-                election.date.toString(DateTimeFormat.mediumDate()))
-
+        val electionDao = ElectionDAO.fromDomain(election)
         val jsonDate = election.date.toString(DateTimeFormat.forPattern("YYYY-MM-dd"))
 
         FirebaseDatabase.getInstance()
@@ -39,9 +37,8 @@ class ElectionRepository
 
                         if (snapshot.hasChildren() && snapshot.childrenCount > 0) {
                             snapshot.children.maxBy { it.key }?.let {
-                                val electionDAO = it.getValue(ElectionDAO::class.java)
-                                val date = LocalDate.parse(electionDAO.date, DateTimeFormat.mediumDate())
-                                emitter.onNext(Election(date, electionDAO.id))
+                                val election = it.getValue(ElectionDAO::class.java)
+                                emitter.onNext(election.toDomain())
                             }
                         }
 
@@ -67,9 +64,8 @@ class ElectionRepository
                             val firstDayOfWeek = now.minusDays(now.dayOfWeek)
 
                             val elections = snapshot.children.map {
-                                val electionDAO = it.getValue(ElectionDAO::class.java)
-                                val date = LocalDate.parse(electionDAO.date, DateTimeFormat.mediumDate())
-                                Election(date, electionDAO.id)
+                                val election = it.getValue(ElectionDAO::class.java)
+                                election.toDomain()
                             }.filter {
                                 it.date > firstDayOfWeek
                             }

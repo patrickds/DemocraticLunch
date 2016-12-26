@@ -17,7 +17,7 @@ open class GetLastChosenRestaurant
         return _electionRepository.getLastElection()
                 .observeOn(Schedulers.io())
                 .flatMap {
-                    _restaurantRepository.getById(it.restaurantId)
+                    _restaurantRepository.getById(it.winner.restaurantId)
                 }
     }
 }
