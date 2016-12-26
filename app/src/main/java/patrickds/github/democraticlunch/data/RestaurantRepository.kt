@@ -42,8 +42,10 @@ class RestaurantRepository @Inject constructor(
                         getNearby(radius)
                                 .observeOn(Schedulers.io())
                                 .subscribe({ restaurant ->
-                                    val wasElectedThisWeek = elections.any { it.restaurantId == restaurant.id }
-                                    restaurant.wasSelectedThisWeek = wasElectedThisWeek
+
+                                    restaurant.wasSelectedThisWeek = elections.any {
+                                        it.winner.restaurantId == restaurant.id
+                                    }
                                     emitter.onNext(restaurant)
                                 }, { error ->
                                     emitter.onError(error)

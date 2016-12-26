@@ -1,16 +1,19 @@
 package patrickds.github.democraticlunch.restaurant_election.domain.usecase
 
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.joda.time.LocalDate
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Election
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
 import patrickds.github.democraticlunch.restaurant_election.RestaurantElectedNotification
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
+import timber.log.Timber
 import javax.inject.Inject
 
-class ChooseWinnerAndNotifyUser
+open class ChooseWinnerAndNotifyUser
 @Inject constructor(
-        private val _rankingRepository: IVotingRepository,
+        private val _votingRepository: IVotingRepository,
         private val _electionRepository: IElectionRepository,
         private val _restaurantRepository: IRestaurantRepository,
         private val _notification: RestaurantElectedNotification) {
@@ -20,20 +23,31 @@ class ChooseWinnerAndNotifyUser
         val now = LocalDate.now()
         val today = now.dayOfYear
 
-        _rankingRepository.getVotingByDay(today)
+        _votingRepository.getVotingByDay(today)
                 .subscribe { voting ->
                     if (voting.hasEntries()) {
 
-                        val winner = voting.getWinner()
+                        val election = voting.electWinner()
 
-                        val election = Election(now, winner.restaurantId)
                         _electionRepository.insertOrUpdate(election)
-
-                        _rankingRepository.endVoting(today)
+                        _votingRepository.endVoting(today)
                         _restaurantRepository.clearVoteCache()
 
-                        _notification.show(winner.restaurantId)
+                        fireNotification(election)
                     }
                 }
+    }
+
+    private fun fireNotification(election: Election){
+
+        val restaurantId = election.winner.restaurantId
+        _restaurantRepository.getById(restaurantId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ restaurant ->
+                    _notification.notify(restaurant)
+                }, { error ->
+                    Timber.e(error)
+                })
     }
 }
