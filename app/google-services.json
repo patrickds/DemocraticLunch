@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "612807956573",
+    "firebase_url": "https://democraticlunch-2fd94.firebaseio.com",
+    "project_id": "democraticlunch-2fd94",
+    "storage_bucket": "democraticlunch-2fd94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612807956573:android:870dba0001a1e93a",
+        "android_client_info": {
+          "package_name": "patrickds.github.democraticlunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612807956573-9enopqguhuarpn21q882rlkntg5j8k1q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "patrickds.github.democraticlunch",
+            "certificate_hash": "E0721A4668AD77F3796C75E564E0BB414115F9DF"
+          }
+        },
+        {
+          "client_id": "612807956573-b8ejqvbrp946ossork1tibgcqr1b9ujl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC13gUv9rGi-JsKNEZoZ6z4Pmg79BveCN0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612807956573-b8ejqvbrp946ossork1tibgcqr1b9ujl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
