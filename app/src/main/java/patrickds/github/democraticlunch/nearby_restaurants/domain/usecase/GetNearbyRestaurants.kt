@@ -8,10 +8,10 @@ import javax.inject.Inject
 open class GetNearbyRestaurants
 @Inject constructor(private val _restaurantRepository: IRestaurantRepository) {
 
-    fun execute(requestValues: RequestValues): Observable<Restaurant> {
+    open fun execute(requestValues: RequestValues): Observable<Restaurant> {
         return _restaurantRepository.getNearest(requestValues.radius)
     }
 
-    class RequestValues(val radius: Int)
-    class ResponseValue(val restaurants: List<Restaurant>)
+    data class RequestValues(val radius: Int)
+    data class ResponseValue(val restaurants: List<Restaurant>)
 }

@@ -10,7 +10,7 @@ class Voting(val entries: List<VoteEntry>, val hasEnded: Boolean) {
 
     private fun getWinner(): VoteEntry {
         if (!hasEntries())
-            throw Exception("Can't calculate the winner with a election with no entries")
+            throw VotingWithoutAnyEntryException()
 
         val winner = entries.maxBy { it.votes }
 

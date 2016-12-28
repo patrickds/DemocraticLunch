@@ -24,9 +24,9 @@ class NearbyRestaurantsPresenter @Inject constructor(
     override fun start() {
         _view.showLoading()
         loadNearbyRestaurants()
-        loadLastChosenRestaurant()
-        verifyVotingStatus()
-        listenForVotingUpdates()
+//        loadLastChosenRestaurant()
+//        verifyVotingStatus()
+//        listenForVotingUpdates()
     }
 
     override fun stop() {
