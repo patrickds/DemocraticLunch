@@ -108,7 +108,15 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
         view.showLongSnackBar(message)
     }
 
-    override fun showErrorOnLastChosenRestaurant() {
-        view.showLongSnackBar("Error downloading last chosen restaurant data")
+    override fun showLastChosenRestaurantError(message: String) {
+        view.showLongSnackBar(message)
+    }
+
+    override fun showVotingUpdatesError(message: String) {
+        view.showLongSnackBar(message)
+    }
+
+    override fun showVerifyVotingError(message: String) {
+        view.showLongSnackBar(message)
     }
 }

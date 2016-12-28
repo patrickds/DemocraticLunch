@@ -7,16 +7,20 @@ class NearbyRestaurantsContract {
 
     interface View {
         fun showNearbyRestaurants(restaurants: MutableList<Restaurant>)
-        fun showError(message: String)
         fun showRestaurant(restaurant: Restaurant)
         fun showLastChosenRestaurant(restaurant: Restaurant)
+        fun updateVotes(votingUpdate: VotingUpdate)
+
+        fun showElectionEndedMessage()
         fun clearItems()
         fun showLoading()
         fun hideLoading()
-        fun showErrorOnLastChosenRestaurant()
         fun disableVoting()
-        fun showElectionEndedMessage()
-        fun updateVotes(votingUpdate: VotingUpdate)
+
+        fun showError(message: String)
+        fun showLastChosenRestaurantError(message: String)
+        fun showVotingUpdatesError(message: String)
+        fun showVerifyVotingError(message: String)
     }
 
     interface Presenter {

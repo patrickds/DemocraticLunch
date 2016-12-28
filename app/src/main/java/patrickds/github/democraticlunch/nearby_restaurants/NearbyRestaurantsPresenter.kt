@@ -11,7 +11,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.Verify
 import timber.log.Timber
 import javax.inject.Inject
 
-class NearbyRestaurantsPresenter @Inject constructor(
+open class NearbyRestaurantsPresenter @Inject constructor(
         private val _view: NearbyRestaurantsContract.View,
         private val _getNearbyRestaurants: GetNearbyRestaurants,
         private val _getLastChosenRestaurant: GetLastChosenRestaurant,
@@ -22,11 +22,10 @@ class NearbyRestaurantsPresenter @Inject constructor(
     private val _subscriptions = CompositeDisposable()
 
     override fun start() {
-        _view.showLoading()
         loadNearbyRestaurants()
-//        loadLastChosenRestaurant()
-//        verifyVotingStatus()
-//        listenForVotingUpdates()
+        loadLastChosenRestaurant()
+        verifyVotingStatus()
+        listenForVotingUpdates()
     }
 
     override fun stop() {
@@ -43,7 +42,8 @@ class NearbyRestaurantsPresenter @Inject constructor(
                         _view.showElectionEndedMessage()
                     }
                 }, { error ->
-                    _view.showError(error.message!!)
+                    _view.showVerifyVotingError("Error verifying today's voting status. Voting will be disabled")
+                    _view.disableVoting()
                     Timber.e(error)
                 })
 
@@ -57,7 +57,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
                 .subscribe({ value ->
                     _view.updateVotes(value)
                 }, { error ->
-                    _view.showError(error.message!!)
+                    _view.showVotingUpdatesError("Error listening for voting updates")
                     Timber.e(error)
                 })
 
@@ -67,6 +67,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
     override fun loadNearbyRestaurants() {
 
         _view.clearItems()
+        _view.showLoading()
 
         val fiveKmRadius = 5000
         val requestValues = GetNearbyRestaurants.RequestValues(fiveKmRadius)
@@ -77,7 +78,8 @@ class NearbyRestaurantsPresenter @Inject constructor(
                 .subscribe({ next ->
                     _view.showRestaurant(next)
                 }, { error ->
-                    _view.showError(error.message!!)
+                    _view.showError("Error loading nearby restaurants")
+                    _view.hideLoading()
                     Timber.e(error)
                 }, {
                     _view.hideLoading()
@@ -93,7 +95,7 @@ class NearbyRestaurantsPresenter @Inject constructor(
                 .subscribe({ next ->
                     _view.showLastChosenRestaurant(next)
                 }, { error ->
-                    _view.showErrorOnLastChosenRestaurant()
+                    _view.showLastChosenRestaurantError("Error loading last chosen restaurant")
                     Timber.e(error)
                 })
 

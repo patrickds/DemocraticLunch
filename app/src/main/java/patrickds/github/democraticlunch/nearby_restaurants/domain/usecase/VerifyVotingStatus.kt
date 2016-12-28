@@ -9,7 +9,7 @@ import javax.inject.Inject
 open class VerifyVotingStatus
 @Inject constructor(private val _votingRepository: IVotingRepository) {
 
-    fun execute(): Observable<eVotingStatus> {
+    open fun execute(): Observable<eVotingStatus> {
 
         val today = LocalDate.now()
         return _votingRepository.getVotingByDay(today.dayOfYear)
