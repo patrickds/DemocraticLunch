@@ -12,7 +12,7 @@ open class GetLastChosenRestaurant
         private val _electionRepository: IElectionRepository,
         private val _restaurantRepository: IRestaurantRepository) {
 
-    fun execute(): Observable<Restaurant> {
+    open fun execute(): Observable<Restaurant> {
 
         return _electionRepository.getLastElection()
                 .observeOn(Schedulers.io())

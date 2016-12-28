@@ -8,7 +8,7 @@ import javax.inject.Inject
 open class ListenForVotingUpdates
 @Inject constructor(private val _votingRepository: IVotingRepository) {
 
-    fun execute(): Observable<VotingUpdate> {
+    open fun execute(): Observable<VotingUpdate> {
         return _votingRepository.listenForVotingUpdates()
     }
 }

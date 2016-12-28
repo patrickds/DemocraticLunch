@@ -37,7 +37,7 @@ class GetLastChosenRestaurantTest {
     }
 
     @Test
-    fun execute_ReturnsTheElectedRestaurant() {
+    fun execute_WhenThereIsAElection_EmitsTheElectedRestaurant() {
         val restaurantId = "1"
         val restaurantVotes = 3
         val entry = VoteEntry(restaurantId, restaurantVotes)
@@ -65,5 +65,55 @@ class GetLastChosenRestaurantTest {
         observer.assertValue(restaurant)
         observer.assertValueCount(1)
         observer.assertComplete()
+    }
+
+    @Test
+    fun execute_WhenThereIsNoElection_EmitsNothing(){
+
+        val restaurantId = "1"
+        val restaurantVotes = 3
+        val restaurant = Restaurant(restaurantId,
+                "Outback",
+                "221B, Baker Street",
+                restaurantVotes,
+                true,
+                false)
+
+        given(electionRepository.getLastElection())
+                .willReturn(Observable.empty())
+
+        given(restaurantRepository.getById(restaurantId))
+                .willReturn(Observable.just(restaurant))
+
+        val observer = TestObserver<Restaurant>()
+        getLastChosenRestaurant.execute()
+                .subscribe(observer)
+
+        observer.assertNoErrors()
+        observer.assertNoValues()
+        observer.assertComplete()
+    }
+
+    @Test
+    fun execute_WhenThereIsAElectionAndThereIsNoRestaurant_EmitsError() {
+        val restaurantId = "1"
+        val restaurantVotes = 3
+        val entry = VoteEntry(restaurantId, restaurantVotes)
+        val electionDate = LocalDate.now()
+        val election = Election(electionDate, entry)
+
+        given(electionRepository.getLastElection())
+                .willReturn(Observable.just(election))
+
+        val error = Exception("There is no restaurant with this id")
+        given(restaurantRepository.getById(restaurantId))
+                .willReturn(Observable.error(error))
+
+        val observer = TestObserver<Restaurant>()
+        getLastChosenRestaurant.execute()
+                .subscribe(observer)
+
+        observer.assertNotComplete()
+        observer.assertError(error)
     }
 }

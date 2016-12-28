@@ -6,10 +6,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import patrickds.github.democraticlunch.RxJavaTestRunner
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VoteEntry
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUpdate
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.eVotingStatus
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetLastChosenRestaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetNearbyRestaurants
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.ListenForVotingUpdates
@@ -48,7 +51,44 @@ class NearbyRestaurantsPresenterTest {
     }
 
     @Test
-    fun testGetNearbyRestaurantsAndLoadIntoView() {
+    fun verifyVotingStatus_WhenVotingIsOngoing_DoesNothing() {
+
+        given(verifyVotingStatus.execute())
+                .willReturn(Observable.just(eVotingStatus.ONGOING))
+
+        presenter.verifyVotingStatus()
+
+        verifyZeroInteractions(view)
+    }
+
+    @Test
+    fun verifyVotingStatus_WhenVotingHasEnded_DisableVotingAndShowsVotingEndedMessageInView() {
+
+        given(verifyVotingStatus.execute())
+                .willReturn(Observable.just(eVotingStatus.ENDED))
+
+        presenter.verifyVotingStatus()
+
+        verify(view).disableVoting()
+        verify(view).showElectionEndedMessage()
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun verifyVotingStatus_WhenEmitsError_DisableVotingAndShowsErrorInView() {
+
+        given(verifyVotingStatus.execute())
+                .willReturn(Observable.error(Exception("Dummy exception")))
+
+        presenter.verifyVotingStatus()
+
+        verify(view).disableVoting()
+        verify(view).showVerifyVotingError("Error verifying today's voting status. Voting will be disabled")
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun loadNearbyRestaurants_WhenEmitsItem_PresenterShowsItemInView() {
 
         val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", 0, false, false)
 
@@ -58,8 +98,78 @@ class NearbyRestaurantsPresenterTest {
 
         presenter.loadNearbyRestaurants()
 
-        val inOrder = Mockito.inOrder(view)
-        inOrder.verify(view).clearItems()
-        inOrder.verify(view).showRestaurant(restaurant)
+        val order = inOrder(view)
+        order.verify(view).clearItems()
+        order.verify(view).showLoading()
+        order.verify(view).showRestaurant(restaurant)
+        order.verify(view).hideLoading()
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun loadNearbyRestaurants_WhenEmitsError_PresenterShowsErrorInView() {
+
+        val requestValues = GetNearbyRestaurants.RequestValues(5000)
+        given(getNearbyRestaurants.execute(requestValues))
+                .willReturn(Observable.error(Exception("Dummy exception")))
+
+        presenter.loadNearbyRestaurants()
+
+        val order = inOrder(view)
+        order.verify(view).clearItems()
+        order.verify(view).showLoading()
+        order.verify(view).showError("Error loading nearby restaurants")
+        order.verify(view).hideLoading()
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun loadLatestChosenRestaurant_WhenEmitsItem_PresenterShowsItemInView() {
+
+        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", 0, false, false)
+
+        given(getLastChosenRestaurant.execute())
+                .willReturn(Observable.just(restaurant))
+
+        presenter.loadLastChosenRestaurant()
+
+        verify(view).showLastChosenRestaurant(restaurant)
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun loadLatestChosenRestaurant_WhenEmitsError_PresenterShowsErrorInView() {
+
+        given(getLastChosenRestaurant.execute())
+                .willReturn(Observable.error(Exception("Dummy exception")))
+
+        presenter.loadLastChosenRestaurant()
+
+        verify(view).showLastChosenRestaurantError("Error loading last chosen restaurant")
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun listenForVotingUpdates_WhenEmitsItem_PresenterShowsItemInView() {
+
+        val votingUpdate = VotingUpdate(listOf(VoteEntry("1", 3)))
+        given(listenForVotingUpdates.execute())
+                .willReturn(Observable.just(votingUpdate))
+
+        presenter.listenForVotingUpdates()
+
+        verify(view).updateVotes(votingUpdate)
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun listenForVotingUpdates_WhenEmitsError_PresenterShowsErrorInView() {
+        given(listenForVotingUpdates.execute())
+                .willReturn(Observable.error(Exception("Dummy exception")))
+
+        presenter.listenForVotingUpdates()
+
+        verify(view).showVotingUpdatesError("Error listening for voting updates")
+        verifyNoMoreInteractions(view)
     }
 }
