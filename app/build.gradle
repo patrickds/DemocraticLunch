@@ -16,6 +16,9 @@ android {
 
         buildConfigField "String", "GOOGLE_WEB_SERVICE_BASE_URL", "\"https://maps.googleapis.com/\""
         buildConfigField "String", "GOOGLE_WEB_SERVICE_KEY", "\"AIzaSyAXqQOx77GyXepX1fTEK_w64mS2y_VVf5g\""
+
+        //For some reason gradle give as warning without this line
+        return null
     }
     buildTypes {
         release {
