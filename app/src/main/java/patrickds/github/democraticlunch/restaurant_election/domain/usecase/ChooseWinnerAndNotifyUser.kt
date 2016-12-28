@@ -38,7 +38,7 @@ open class ChooseWinnerAndNotifyUser
                 }
     }
 
-    private fun fireNotification(election: Election){
+    private fun fireNotification(election: Election) {
 
         val restaurantId = election.winner.restaurantId
         _restaurantRepository.getById(restaurantId)

@@ -46,6 +46,9 @@ class ChooseWinnerAndNotifyUserTest {
                 electionRepository,
                 restaurantRepository,
                 notification)
+
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler { TestScheduler() }
+        RxJavaPlugins.setInitIoSchedulerHandler { TestScheduler() }
     }
 
     @Test
@@ -60,9 +63,6 @@ class ChooseWinnerAndNotifyUserTest {
         verifyZeroInteractions(notification)
         verifyZeroInteractions(electionRepository)
         verifyZeroInteractions(restaurantRepository)
-
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler { TestScheduler() }
-        RxJavaPlugins.setInitIoSchedulerHandler { TestScheduler() }
     }
 
     @Test
