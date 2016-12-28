@@ -4,17 +4,15 @@ import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Matchers
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import patrickds.github.democraticlunch.RxJavaTestRunner
+import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
 
-@RunWith(RxJavaTestRunner::class)
-class GetNearbyRestaurantsTest {
+class GetNearbyRestaurantsTest : RxJavaTest() {
 
     @Mock
     lateinit var restaurantsRepository: IRestaurantRepository
@@ -24,7 +22,6 @@ class GetNearbyRestaurantsTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-
         getNearbyRestaurants = GetNearbyRestaurants(restaurantsRepository)
     }
 

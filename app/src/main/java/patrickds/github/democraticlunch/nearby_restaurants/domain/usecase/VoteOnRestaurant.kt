@@ -6,21 +6,21 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.I
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 import javax.inject.Inject
 
-class VoteOnRestaurant
+open class VoteOnRestaurant
 @Inject constructor(
-        private val _rankingRepository: IVotingRepository,
-        private val _restaurantRepository: IVotedRestaurantsDataSource) {
+        private val _votingRepository: IVotingRepository,
+        private val _votedRestaurantsDataSource: IVotedRestaurantsDataSource) {
 
-    fun execute(requestValues: RequestValues): Observable<ResponseValue> {
+    open fun execute(requestValues: RequestValues): Observable<ResponseValue> {
         val restaurant = requestValues.restaurant
         restaurant.vote()
 
-        _rankingRepository.insertOrUpdate(restaurant)
-        _restaurantRepository.insertOrUpdate(restaurant)
+        _votingRepository.insertOrUpdate(restaurant)
+        _votedRestaurantsDataSource.insertOrUpdate(restaurant)
 
         return Observable.just(ResponseValue())
     }
 
-    class RequestValues(val restaurant: Restaurant)
+    data class RequestValues(val restaurant: Restaurant)
     class ResponseValue()
 }

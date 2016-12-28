@@ -5,19 +5,17 @@ import io.reactivex.observers.TestObserver
 import org.joda.time.LocalDate
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import patrickds.github.democraticlunch.RxJavaTestRunner
+import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Election
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VoteEntry
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
 
-@RunWith(RxJavaTestRunner::class)
-class GetLastChosenRestaurantTest {
+class GetLastChosenRestaurantTest : RxJavaTest() {
 
     @Mock
     lateinit var electionRepository: IElectionRepository
