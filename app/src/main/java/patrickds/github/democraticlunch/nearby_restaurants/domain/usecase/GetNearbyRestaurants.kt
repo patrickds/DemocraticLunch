@@ -13,5 +13,4 @@ open class GetNearbyRestaurants
     }
 
     data class RequestValues(val radius: Int)
-    data class ResponseValue(val restaurants: List<Restaurant>)
 }

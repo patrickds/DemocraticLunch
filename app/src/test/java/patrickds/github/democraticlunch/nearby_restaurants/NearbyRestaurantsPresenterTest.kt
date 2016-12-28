@@ -3,12 +3,11 @@ package patrickds.github.democraticlunch.nearby_restaurants
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import patrickds.github.democraticlunch.RxJavaTestRunner
+import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VoteEntry
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUpdate
@@ -18,8 +17,7 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetNea
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.ListenForVotingUpdates
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VerifyVotingStatus
 
-@RunWith(RxJavaTestRunner::class)
-class NearbyRestaurantsPresenterTest {
+class NearbyRestaurantsPresenterTest : RxJavaTest() {
 
     @Mock
     lateinit var view: NearbyRestaurantsContract.View

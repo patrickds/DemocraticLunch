@@ -5,18 +5,16 @@ import io.reactivex.observers.TestObserver
 import org.joda.time.LocalDate
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import patrickds.github.democraticlunch.RxJavaTestRunner
+import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VoteEntry
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.eVotingStatus
 import patrickds.github.democraticlunch.restaurant_election.domain.model.Voting
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 
-@RunWith(RxJavaTestRunner::class)
-class VerifyVotingStatusTest {
+class VerifyVotingStatusTest : RxJavaTest() {
 
     @Mock
     lateinit var votingRepository: IVotingRepository
@@ -26,7 +24,6 @@ class VerifyVotingStatusTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-
         verifyVotingStatus = VerifyVotingStatus(votingRepository)
     }
 

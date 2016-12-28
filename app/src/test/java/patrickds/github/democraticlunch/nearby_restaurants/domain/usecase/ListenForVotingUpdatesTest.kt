@@ -4,17 +4,15 @@ import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import patrickds.github.democraticlunch.RxJavaTestRunner
+import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VoteEntry
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUpdate
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 
-@RunWith(RxJavaTestRunner::class)
-class ListenForVotingUpdatesTest {
+class ListenForVotingUpdatesTest : RxJavaTest() {
 
     @Mock
     lateinit var votingRepository: IVotingRepository
@@ -24,7 +22,6 @@ class ListenForVotingUpdatesTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-
         listenForVotingUpdates = ListenForVotingUpdates(votingRepository)
     }
 
@@ -65,7 +62,7 @@ class ListenForVotingUpdatesTest {
     }
 
     @Test
-    fun execute_WhenError_EmitsError(){
+    fun execute_WhenError_EmitsError() {
 
         val error = Exception("Error")
         given(votingRepository.listenForVotingUpdates())

@@ -1,9 +1,6 @@
 package patrickds.github.democraticlunch.restaurant_election.domain.usecase
 
 import io.reactivex.Observable
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.TestScheduler
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
@@ -13,6 +10,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
 import org.mockito.MockitoAnnotations
+import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VoteEntry
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
@@ -21,7 +19,7 @@ import patrickds.github.democraticlunch.restaurant_election.RestaurantElectedNot
 import patrickds.github.democraticlunch.restaurant_election.domain.model.Voting
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 
-class ChooseWinnerAndNotifyUserTest {
+class ChooseWinnerAndNotifyUserTest : RxJavaTest() {
 
     @Mock
     lateinit var votingRepository: IVotingRepository
@@ -46,9 +44,6 @@ class ChooseWinnerAndNotifyUserTest {
                 electionRepository,
                 restaurantRepository,
                 notification)
-
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler { TestScheduler() }
-        RxJavaPlugins.setInitIoSchedulerHandler { TestScheduler() }
     }
 
     @Test
