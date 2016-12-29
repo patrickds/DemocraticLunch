@@ -16,6 +16,8 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetLas
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetNearbyRestaurants
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.ListenForVotingUpdates
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VerifyVotingStatus
+import patrickds.github.democraticlunch.permissions.PermissionRequester
+import patrickds.github.democraticlunch.permissions.ePermission
 
 class NearbyRestaurantsPresenterTest : RxJavaTest() {
 
@@ -34,6 +36,9 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
     @Mock
     lateinit var listenForVotingUpdates: ListenForVotingUpdates
 
+    @Mock
+    lateinit var permissionRequester: PermissionRequester
+
     lateinit var presenter: NearbyRestaurantsContract.Presenter
 
     @Before
@@ -42,6 +47,7 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
 
         presenter = NearbyRestaurantsPresenter(
                 view,
+                permissionRequester,
                 getNearbyRestaurants,
                 getLastChosenRestaurant,
                 verifyVotingStatus,
@@ -86,7 +92,7 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
     }
 
     @Test
-    fun loadNearbyRestaurants_WhenEmitsItem_PresenterShowsItemInView() {
+    fun loadNearbyRestaurantsAskingPermission_WhenHasPermissionAndEmitsItem_PresenterShowsItemInView() {
 
         val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", 0, false, false)
 
@@ -94,9 +100,13 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
         given(getNearbyRestaurants.execute(requestValues))
                 .willReturn(Observable.just(restaurant))
 
-        presenter.loadNearbyRestaurants()
+        given(permissionRequester.request(ePermission.LOCATION))
+                .willReturn(Observable.just(true))
 
-        val order = inOrder(view)
+        presenter.loadNearbyRestaurantsAskingPermission()
+
+        val order = inOrder(view, permissionRequester)
+        order.verify(permissionRequester).request(ePermission.LOCATION)
         order.verify(view).clearItems()
         order.verify(view).showLoading()
         order.verify(view).showRestaurant(restaurant)
@@ -105,15 +115,37 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
     }
 
     @Test
-    fun loadNearbyRestaurants_WhenEmitsError_PresenterShowsErrorInView() {
+    fun loadNearbyRestaurantsAskingPermission_WhenDontHavePermissionAndEmitsItem_PresenterDontInteractWithView() {
+
+        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", 0, false, false)
+
+        val requestValues = GetNearbyRestaurants.RequestValues(5000)
+        given(getNearbyRestaurants.execute(requestValues))
+                .willReturn(Observable.just(restaurant))
+
+        given(permissionRequester.request(ePermission.LOCATION))
+                .willReturn(Observable.just(false))
+
+        presenter.loadNearbyRestaurantsAskingPermission()
+
+        verify(permissionRequester).request(ePermission.LOCATION)
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun loadNearbyRestaurantsAskingPermission_WhenHasPermissionAndEmitsError_PresenterShowsErrorInView() {
 
         val requestValues = GetNearbyRestaurants.RequestValues(5000)
         given(getNearbyRestaurants.execute(requestValues))
                 .willReturn(Observable.error(Exception("Dummy exception")))
 
-        presenter.loadNearbyRestaurants()
+        given(permissionRequester.request(ePermission.LOCATION))
+                .willReturn(Observable.just(true))
 
-        val order = inOrder(view)
+        presenter.loadNearbyRestaurantsAskingPermission()
+
+        val order = inOrder(view, permissionRequester)
+        order.verify(permissionRequester).request(ePermission.LOCATION)
         order.verify(view).clearItems()
         order.verify(view).showLoading()
         order.verify(view).showError("Error loading nearby restaurants")

@@ -26,7 +26,7 @@ class NearbyRestaurantsContract {
     interface Presenter {
         fun start()
         fun stop()
-        fun loadNearbyRestaurants()
+        fun loadNearbyRestaurantsAskingPermission()
         fun loadLastChosenRestaurant()
         fun verifyVotingStatus()
         fun listenForVotingUpdates()

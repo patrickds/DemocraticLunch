@@ -8,11 +8,14 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetLas
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.GetNearbyRestaurants
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.ListenForVotingUpdates
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VerifyVotingStatus
+import patrickds.github.democraticlunch.permissions.PermissionRequester
+import patrickds.github.democraticlunch.permissions.ePermission
 import timber.log.Timber
 import javax.inject.Inject
 
 open class NearbyRestaurantsPresenter @Inject constructor(
         private val _view: NearbyRestaurantsContract.View,
+        private val _permissionRequester: PermissionRequester,
         private val _getNearbyRestaurants: GetNearbyRestaurants,
         private val _getLastChosenRestaurant: GetLastChosenRestaurant,
         private val _verifyVotingStatus: VerifyVotingStatus,
@@ -22,10 +25,10 @@ open class NearbyRestaurantsPresenter @Inject constructor(
     private val _subscriptions = CompositeDisposable()
 
     override fun start() {
-        loadNearbyRestaurants()
-        loadLastChosenRestaurant()
-        verifyVotingStatus()
-        listenForVotingUpdates()
+//        loadNearbyRestaurantsAskingPermission()
+//        loadLastChosenRestaurant()
+//        verifyVotingStatus()
+//        listenForVotingUpdates()
     }
 
     override fun stop() {
@@ -64,14 +67,22 @@ open class NearbyRestaurantsPresenter @Inject constructor(
         _subscriptions.add(subscription)
     }
 
-    override fun loadNearbyRestaurants() {
+    override fun loadNearbyRestaurantsAskingPermission() {
+
+        _permissionRequester.request(ePermission.LOCATION)
+                .subscribe { granted ->
+                    if (granted)
+                        loadNearbyRestaurants()
+                }
+    }
+
+    private fun loadNearbyRestaurants() {
 
         _view.clearItems()
         _view.showLoading()
 
         val fiveKmRadius = 5000
         val requestValues = GetNearbyRestaurants.RequestValues(fiveKmRadius)
-
         val subscription = _getNearbyRestaurants.execute(requestValues)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
