@@ -12,7 +12,7 @@ import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VoteOnRestaurant
 
-class NearbyRestaurantItemPresenterTest : RxJavaTest() {
+class RestaurantItemPresenterTest : RxJavaTest() {
 
     @Mock
     lateinit var view: RestaurantItemContract.View

@@ -48,7 +48,7 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
 
         _swipeRefreshLayout = view as SwipeRefreshLayout
         _swipeRefreshLayout.setOnRefreshListener {
-            _presenter.loadNearbyRestaurants()
+            _presenter.loadNearbyRestaurantsAskingPermission()
             _presenter.loadLastChosenRestaurant()
         }
 
