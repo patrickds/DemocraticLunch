@@ -1,5 +1,13 @@
 # DemocraticLunch
 
+## What's New
+
+* Automated Tests
+
+* Runtime Permissions
+
+* Improved UI
+
 ## Code Challenge
 
 This is the result of a code challenge started 20/12/2016 and ended 23/12/2016, taking 4 days to complete.

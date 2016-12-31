@@ -16,6 +16,5 @@ interface IGoogleWebService {
             @Query("key") key: String,
             @Query("location") location: String,
             @Query("radius") radius: Int,
-            @Query("sensor") sensor: Boolean,
-            @Query("type") type: String): Observable<PlacesResult>
+            @Query("type") type: ePlaceType): Observable<PlacesResult>
 }

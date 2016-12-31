@@ -5,6 +5,7 @@ import io.reactivex.schedulers.Schedulers
 import patrickds.github.democraticlunch.BuildConfig
 import patrickds.github.democraticlunch.extensions.LocationExtensions.formatToApi
 import patrickds.github.democraticlunch.google.places.IGoogleWebService
+import patrickds.github.democraticlunch.google.places.ePlaceType
 import patrickds.github.democraticlunch.location.LocationService
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
@@ -58,16 +59,13 @@ class RestaurantRepository @Inject constructor(
 
     fun getNearby(radius: Int): Observable<Restaurant> {
 
-        val PLACE_TYPE = "restaurant"
-        val hasSensor = true
         return _locationService.getLastKnownLocation()
                 .flatMap { location ->
                     _googleWebService.getNearbyPlaces(
                             BuildConfig.GOOGLE_WEB_SERVICE_KEY,
                             location.formatToApi(),
                             radius,
-                            hasSensor,
-                            PLACE_TYPE)
+                            ePlaceType.RESTAURANT)
                             .subscribeOn(Schedulers.io())
                             .switchMap { Observable.fromIterable(it.results!!) }
                             .map {
@@ -76,7 +74,10 @@ class RestaurantRepository @Inject constructor(
                                 val address = it.vicinity!!
                                 val votes = 0
                                 val isVoted = _votedRestaurantsCache.getIsVoted(id)
-                                Restaurant(id, name, address, votes, isVoted)
+                                val rest = Restaurant(id, name, address, votes, isVoted)
+                                val key = BuildConfig.GOOGLE_WEB_SERVICE_KEY
+                                rest.photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=$key"
+                                rest
                             }
                 }
     }
