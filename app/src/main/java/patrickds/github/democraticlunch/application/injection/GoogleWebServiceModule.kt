@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import patrickds.github.democraticlunch.BuildConfig
-import patrickds.github.democraticlunch.googleplaces.IGoogleWebService
+import patrickds.github.democraticlunch.google.places.IGoogleWebService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

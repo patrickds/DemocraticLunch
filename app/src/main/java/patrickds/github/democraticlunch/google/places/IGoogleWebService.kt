@@ -1,4 +1,4 @@
-package patrickds.github.democraticlunch.googleplaces
+package patrickds.github.democraticlunch.google.places
 
 import io.reactivex.Observable
 import retrofit2.http.GET

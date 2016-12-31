@@ -13,7 +13,8 @@ import patrickds.github.democraticlunch.permissions.ePermission
 import timber.log.Timber
 import javax.inject.Inject
 
-open class NearbyRestaurantsPresenter @Inject constructor(
+open class NearbyRestaurantsPresenter
+@Inject constructor(
         private val _view: NearbyRestaurantsContract.View,
         private val _permissionRequester: PermissionRequester,
         private val _getNearbyRestaurants: GetNearbyRestaurants,
@@ -25,10 +26,10 @@ open class NearbyRestaurantsPresenter @Inject constructor(
     private val _subscriptions = CompositeDisposable()
 
     override fun start() {
-//        loadNearbyRestaurantsAskingPermission()
-//        loadLastChosenRestaurant()
-//        verifyVotingStatus()
-//        listenForVotingUpdates()
+        loadNearbyRestaurantsAskingPermission()
+        loadLastChosenRestaurant()
+        verifyVotingStatus()
+        listenForVotingUpdates()
     }
 
     override fun stop() {
