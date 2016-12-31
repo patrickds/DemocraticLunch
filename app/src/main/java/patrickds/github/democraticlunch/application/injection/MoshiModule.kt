@@ -1,15 +1,14 @@
 package patrickds.github.democraticlunch.application.injection
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 
 @Module
-class GsonModule {
+class MoshiModule {
     @Provides
     @ApplicationScope
-    fun gson(): Gson {
-        return GsonBuilder().create()
+    fun moshi(): Moshi {
+        return Moshi.Builder().build()
     }
 }

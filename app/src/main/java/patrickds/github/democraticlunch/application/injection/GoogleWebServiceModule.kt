@@ -1,16 +1,16 @@
 package patrickds.github.democraticlunch.application.injection
 
-import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import patrickds.github.democraticlunch.BuildConfig
 import patrickds.github.democraticlunch.google.places.IGoogleWebService
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
-@Module(includes = arrayOf(NetworkModule::class, GsonModule::class))
+@Module(includes = arrayOf(NetworkModule::class, MoshiModule::class))
 class GoogleWebServiceModule {
 
     @Provides
@@ -21,9 +21,9 @@ class GoogleWebServiceModule {
 
     @Provides
     @ApplicationScope
-    fun retrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+    fun retrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .baseUrl(BuildConfig.GOOGLE_WEB_SERVICE_BASE_URL)
