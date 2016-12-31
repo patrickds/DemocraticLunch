@@ -5,6 +5,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import patrickds.github.democraticlunch.RxJavaTest
@@ -52,6 +53,23 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
                 getLastChosenRestaurant,
                 verifyVotingStatus,
                 listenForVotingUpdates)
+    }
+
+    @Test
+    fun start_ShouldRefreshView() {
+        val presenterSpy = Mockito.spy(presenter)
+
+        doNothing().`when`(presenterSpy).loadNearbyRestaurantsAskingPermission()
+        doNothing().`when`(presenterSpy).listenForVotingUpdates()
+        doNothing().`when`(presenterSpy).loadLastChosenRestaurant()
+        doNothing().`when`(presenterSpy).verifyVotingStatus()
+
+        presenterSpy.start()
+
+        verify(presenterSpy).loadNearbyRestaurantsAskingPermission()
+        verify(presenterSpy).listenForVotingUpdates()
+        verify(presenterSpy).loadLastChosenRestaurant()
+        verify(presenterSpy).verifyVotingStatus()
     }
 
     @Test

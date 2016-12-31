@@ -1,16 +1,16 @@
 package patrickds.github.democraticlunch.application.injection
 
 import android.content.Context
-import android.location.LocationManager
 import dagger.Module
 import dagger.Provides
+import patrickds.github.democraticlunch.google.playservices.GooglePlayServices
 
 @Module(includes = arrayOf(ContextModule::class))
-class LocationModule {
+class GoogleServicesModule {
 
     @Provides
     @ApplicationScope
-    fun locationManager(context: Context): LocationManager {
-        return context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    fun googlePlayServices(context: Context): GooglePlayServices {
+        return GooglePlayServices(context)
     }
 }
