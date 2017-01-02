@@ -8,6 +8,7 @@ import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import patrickds.github.democraticlunch.RestaurantTestHelper
 import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Election
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
@@ -42,12 +43,7 @@ class GetLastChosenRestaurantTest : RxJavaTest() {
         val electionDate = LocalDate.now()
         val election = Election(electionDate, entry)
 
-        val restaurant = Restaurant(restaurantId,
-                "Outback",
-                "221B, Baker Street",
-                restaurantVotes,
-                true,
-                false)
+        val restaurant = RestaurantTestHelper.buildDefaultRestaurant()
 
         given(electionRepository.getLastElection())
                 .willReturn(Observable.just(election))
@@ -73,6 +69,8 @@ class GetLastChosenRestaurantTest : RxJavaTest() {
         val restaurant = Restaurant(restaurantId,
                 "Outback",
                 "221B, Baker Street",
+                "Reference",
+                4.2f,
                 restaurantVotes,
                 true,
                 false)

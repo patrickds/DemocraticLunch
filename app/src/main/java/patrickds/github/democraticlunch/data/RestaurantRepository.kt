@@ -23,14 +23,7 @@ class RestaurantRepository @Inject constructor(
     override fun getById(id: String): Observable<Restaurant> {
 
         return _googleWebService.getById(BuildConfig.GOOGLE_WEB_SERVICE_KEY, id)
-                .map {
-                    val place = it!!.result!!
-                    val name = place.name!!
-                    val address = place.vicinity!!
-                    val votes = 0
-                    val isVoted = _votedRestaurantsCache.getIsVoted(id)
-                    Restaurant(id, name, address, votes, isVoted)
-                }
+                .map { it.result!!.toDomain(_votedRestaurantsCache) }
     }
 
     override fun getNearest(radius: Int): Observable<Restaurant> {
@@ -68,17 +61,7 @@ class RestaurantRepository @Inject constructor(
                             ePlaceType.RESTAURANT)
                             .subscribeOn(Schedulers.io())
                             .switchMap { Observable.fromIterable(it.results!!) }
-                            .map {
-                                val id = it.place_id!!
-                                val name = it.name!!
-                                val address = it.vicinity!!
-                                val votes = 0
-                                val isVoted = _votedRestaurantsCache.getIsVoted(id)
-                                val rest = Restaurant(id, name, address, votes, isVoted)
-                                val key = BuildConfig.GOOGLE_WEB_SERVICE_KEY
-                                rest.photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=$key"
-                                rest
-                            }
+                            .map { it.toDomain(_votedRestaurantsCache) }
                 }
     }
 

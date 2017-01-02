@@ -2,6 +2,8 @@ package patrickds.github.democraticlunch.nearby_restaurants
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.GrayscaleTransformation
 import kotlinx.android.synthetic.main.nearby_restaurants_list_item.view.*
 import patrickds.github.democraticlunch.R
 import patrickds.github.democraticlunch.data.VotedRestaurantsCache
@@ -9,13 +11,17 @@ import patrickds.github.democraticlunch.data.VotingRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VoteOnRestaurant
 
-class RestaurantItemViewHolder(val view: View) :
+class RestaurantItemViewHolder(
+        private val view: View,
+        private val _picasso: Picasso) :
         RecyclerView.ViewHolder(view),
         RestaurantItemContract.View {
 
     private val _nameTextView by lazy { view.restaurant_name }
     private val _addressTextView by lazy { view.restaurant_address }
+    private val _imageView by lazy { view.restaurant_image }
     private val _votesTextView by lazy { view.restaurant_votes }
+    private val _ratingTextView by lazy { view.rating_text }
     private val _voteButton by lazy { view.vote_button }
     private val _restaurantAlreadyChosenTextView by lazy { view.restaurant_already_chosen_text }
 
@@ -33,12 +39,13 @@ class RestaurantItemViewHolder(val view: View) :
         _voteButton.setOnClickListener {
             _presenter.vote(restaurant)
         }
+
     }
 
     override fun reset() {
         _restaurantAlreadyChosenTextView.visibility = View.GONE
         _voteButton.visibility = View.VISIBLE
-        _voteButton.isEnabled = true
+        _voteButton.isClickable = false
         _voteButton.setBackgroundResource(R.color.colorPrimary)
         view.isEnabled = true
     }
@@ -55,10 +62,25 @@ class RestaurantItemViewHolder(val view: View) :
         _votesTextView.text = votes
     }
 
+    override fun showRating(rating: String) {
+        _ratingTextView.text = rating
+    }
+
+    override fun loadImageFromUrl(photoUrl: String) {
+        _picasso.load(photoUrl)
+                .placeholder(R.drawable.placeholder)
+                .into(_imageView)
+    }
+
+    override fun loadImageFromUrlInGrayScale(photoUrl: String) {
+        _picasso.load(photoUrl)
+                .placeholder(R.drawable.placeholder)
+                .transform(GrayscaleTransformation())
+                .into(_imageView)
+    }
+
     override fun disableVoting() {
-        _voteButton.isEnabled = false
-        _voteButton.setBackgroundResource(R.color.colorPrimaryDisabled)
-        view.isEnabled = false
+        _voteButton.isClickable = false
     }
 
     override fun showAlreadySelectedMessage() {
@@ -66,12 +88,12 @@ class RestaurantItemViewHolder(val view: View) :
         _restaurantAlreadyChosenTextView.visibility = View.VISIBLE
     }
 
-    override fun showVoteText() {
-        _voteButton.text = "VOTE"
+    override fun showVote() {
+//        _voteButton.text = "VOTE"
     }
 
-    override fun showUnVoteText() {
-        _voteButton.text = "UNVOTE"
+    override fun showUnVote() {
+//        _voteButton.text = "UNVOTE"
     }
 
     fun disable() {

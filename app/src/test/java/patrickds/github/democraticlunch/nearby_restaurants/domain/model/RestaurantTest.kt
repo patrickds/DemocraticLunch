@@ -2,13 +2,13 @@ package patrickds.github.democraticlunch.nearby_restaurants.domain.model
 
 import org.junit.Assert.*
 import org.junit.Test
-import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.BuildConfig
 
 class RestaurantTest {
 
     @Test
     fun vote_restaurantNotVotes_votes() {
-        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", 0, false)
+        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", "Reference", 4.2f, 0, false)
 
         restaurant.vote()
         assertEquals(1, restaurant.votes)
@@ -18,7 +18,7 @@ class RestaurantTest {
     @Test
     fun vote_restaurantAlreadyVoted_unvotes() {
 
-        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", 1, true)
+        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", "Reference", 4.2f, 1, true)
         restaurant.vote()
 
         assertEquals(0, restaurant.votes)
@@ -26,11 +26,12 @@ class RestaurantTest {
     }
 
     @Test
-    fun canVote_restaurantAlreadyVotedToday_returnsFalse() {
+    fun buildPhotoUrl(){
+        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", "Reference", 4.2f, 1, true)
 
-        val restaurant = Restaurant("10", "Outback", "221B, Baker Street", 0, false)
-        restaurant.vote()
+        val key = BuildConfig.GOOGLE_WEB_SERVICE_KEY
+        val photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=${restaurant.photoReference}&key=$key"
 
-        assertFalse(restaurant.canVote())
+        assertEquals(photoUrl, restaurant.buildPhotoUrl())
     }
 }

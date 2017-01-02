@@ -5,8 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="patrickds.github.democraticlunch.nearby_restaurants.NearbyRestaurantsFragment"
     tools:showIn="@layout/nearby_restaurants_activity">
 

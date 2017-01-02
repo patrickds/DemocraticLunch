@@ -8,8 +8,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.MockitoAnnotations
+import patrickds.github.democraticlunch.RestaurantTestHelper
 import patrickds.github.democraticlunch.RxJavaTest
-import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.usecase.VoteOnRestaurant
 
 class RestaurantItemPresenterTest : RxJavaTest() {
@@ -23,100 +23,65 @@ class RestaurantItemPresenterTest : RxJavaTest() {
     lateinit var presenter: RestaurantItemPresenter
 
     @Before
-    fun setup(){
+    fun setup() {
         MockitoAnnotations.initMocks(this)
         presenter = RestaurantItemPresenter(view, voteOnRestaurant)
     }
 
     @Test
-    fun bindNotVotedRestaurantAndLoadIntoView(){
-        val restaurantId = "1"
-        val restaurantName = "Outback"
-        val restaurantAddress = "221B, Baker Street"
-        val restaurantVotes = 0
-        val isVoted = false
-        val wasChosenThisWeek = false
-        val restaurant = Restaurant(
-                restaurantId,
-                restaurantName,
-                restaurantAddress,
-                restaurantVotes,
-                isVoted,
-                wasChosenThisWeek)
+    fun bindNotVotedRestaurantAndLoadIntoView() {
+
+        val restaurant = RestaurantTestHelper.buildDefaultRestaurant()
 
         presenter.bind(restaurant)
 
         verify(view).reset()
-        verify(view).showRestaurantName(restaurantName)
-        verify(view).showRestaurantAddress(restaurantAddress)
-        verify(view).showRestaurantVotes("Votes: $restaurantVotes")
-        verify(view).showVoteText()
+        verify(view).showRestaurantName(restaurant.name)
+        verify(view).showRestaurantAddress(restaurant.address)
+        verify(view).showRestaurantVotes("Votes: ${restaurant.votes}")
+        verify(view).showRating(restaurant.rating.toString())
+        verify(view).showVote()
+        verify(view).loadImageFromUrl(restaurant.buildPhotoUrl())
         verifyNoMoreInteractions(view)
     }
 
     @Test
-    fun bindVotedRestaurantAndLoadIntoView(){
-        val restaurantId = "1"
-        val restaurantName = "Outback"
-        val restaurantAddress = "221B, Baker Street"
-        val restaurantVotes = 1
-        val isVoted = true
-        val wasChosenThisWeek = false
-        val restaurant = Restaurant(
-                restaurantId,
-                restaurantName,
-                restaurantAddress,
-                restaurantVotes,
-                isVoted,
-                wasChosenThisWeek)
+    fun bindVotedRestaurantAndLoadIntoView() {
+        val restaurant = RestaurantTestHelper.buildRestaurant(1, true, false)
 
         presenter.bind(restaurant)
 
         verify(view).reset()
-        verify(view).showRestaurantName(restaurantName)
-        verify(view).showRestaurantAddress(restaurantAddress)
-        verify(view).showRestaurantVotes("Votes: $restaurantVotes")
-        verify(view).showUnVoteText()
+        verify(view).showRestaurantName(restaurant.name)
+        verify(view).showRestaurantAddress(restaurant.address)
+        verify(view).showRestaurantVotes("Votes: ${restaurant.votes}")
+        verify(view).showRating(restaurant.rating.toString())
+        verify(view).showUnVote()
+        verify(view).loadImageFromUrl(restaurant.buildPhotoUrl())
         verifyNoMoreInteractions(view)
     }
 
     @Test
-    fun bindAlreadySelectedRestaurantAndLoadIntoView(){
-        val restaurantId = "1"
-        val restaurantName = "Outback"
-        val restaurantAddress = "221B, Baker Street"
-        val restaurantVotes = 0
-        val isVoted = false
-        val wasChosenThisWeek = true
-        val restaurant = Restaurant(
-                restaurantId,
-                restaurantName,
-                restaurantAddress,
-                restaurantVotes,
-                isVoted,
-                wasChosenThisWeek)
+    fun bindAlreadySelectedRestaurantAndLoadIntoView() {
+        val restaurant = RestaurantTestHelper.buildRestaurant(0, false, true)
 
         presenter.bind(restaurant)
 
         verify(view).reset()
-        verify(view).showRestaurantName(restaurantName)
-        verify(view).showRestaurantAddress(restaurantAddress)
-        verify(view).showRestaurantVotes("Votes: $restaurantVotes")
-        verify(view).showVoteText()
+        verify(view).showRestaurantName(restaurant.name)
+        verify(view).showRestaurantAddress(restaurant.address)
+        verify(view).showRestaurantVotes("Votes: ${restaurant.votes}")
+        verify(view).showRating(restaurant.rating.toString())
+        verify(view).showVote()
         verify(view).disableVoting()
         verify(view).showAlreadySelectedMessage()
+        verify(view).loadImageFromUrlInGrayScale(restaurant.buildPhotoUrl())
         verifyNoMoreInteractions(view)
     }
 
     @Test
-    fun vote_WhenVotedRestaurant_PresenterUpdatesVoteTextInView(){
-
-        val restaurant = Restaurant("1",
-                "Outback",
-                "221B, Baker Street",
-                1,
-                true,
-                false)
+    fun vote_WhenVotedRestaurant_PresenterUpdatesVoteTextInView() {
+        val restaurant = RestaurantTestHelper.buildRestaurant(1, true, false)
         val requestValues = VoteOnRestaurant.RequestValues(restaurant)
         val responseValue = VoteOnRestaurant.ResponseValue()
 
@@ -125,19 +90,14 @@ class RestaurantItemPresenterTest : RxJavaTest() {
 
         presenter.vote(restaurant)
 
-        verify(view).showUnVoteText()
+        verify(view).showUnVote()
         verifyNoMoreInteractions(view)
     }
 
     @Test
-    fun vote_WhenNotVotedRestaurant_PresenterUpdatesVoteTextInView(){
+    fun vote_WhenNotVotedRestaurant_PresenterUpdatesVoteTextInView() {
+        val restaurant = RestaurantTestHelper.buildDefaultRestaurant()
 
-        val restaurant = Restaurant("1",
-                "Outback",
-                "221B, Baker Street",
-                0,
-                false,
-                false)
         val requestValues = VoteOnRestaurant.RequestValues(restaurant)
         val responseValue = VoteOnRestaurant.ResponseValue()
 
@@ -146,7 +106,7 @@ class RestaurantItemPresenterTest : RxJavaTest() {
 
         presenter.vote(restaurant)
 
-        verify(view).showVoteText()
+        verify(view).showVote()
         verifyNoMoreInteractions(view)
     }
 }

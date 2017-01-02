@@ -19,15 +19,20 @@ class RestaurantItemPresenter
         _view.showRestaurantName(restaurant.name)
         _view.showRestaurantAddress(restaurant.address)
         _view.showRestaurantVotes("Votes: ${restaurant.votes}")
+        _view.showRating(restaurant.rating.toString())
 
         if (restaurant.isVoted)
-            _view.showUnVoteText()
+            _view.showUnVote()
         else
-            _view.showVoteText()
+            _view.showVote()
 
         if (restaurant.wasSelectedThisWeek) {
             _view.disableVoting()
             _view.showAlreadySelectedMessage()
+            _view.loadImageFromUrlInGrayScale(restaurant.buildPhotoUrl())
+        }
+        else {
+            _view.loadImageFromUrl(restaurant.buildPhotoUrl())
         }
     }
 
@@ -37,9 +42,9 @@ class RestaurantItemPresenter
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({}, {}, {
                     if (restaurant.isVoted)
-                        _view.showUnVoteText()
+                        _view.showUnVote()
                     else
-                        _view.showVoteText()
+                        _view.showVote()
                 })
     }
 }

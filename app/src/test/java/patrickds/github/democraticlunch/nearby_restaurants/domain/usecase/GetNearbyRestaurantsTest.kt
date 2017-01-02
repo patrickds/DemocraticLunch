@@ -8,6 +8,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Matchers
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import patrickds.github.democraticlunch.RestaurantTestHelper
 import patrickds.github.democraticlunch.RxJavaTest
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
@@ -28,13 +29,7 @@ class GetNearbyRestaurantsTest : RxJavaTest() {
     @Test
     fun getNearbyRestaurants_WhenThereIsARestaurantEmitIt() {
 
-        val restaurant = Restaurant(
-                "23",
-                "Outback Steak House",
-                "221B, Baker Street",
-                0,
-                false,
-                false)
+        val restaurant = RestaurantTestHelper.buildDefaultRestaurant()
 
         given(restaurantsRepository.getNearest(Matchers.anyInt()))
                 .willReturn(Observable.just(restaurant))
