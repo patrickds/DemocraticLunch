@@ -18,7 +18,7 @@ open class GooglePlayServices
                 .addApi(LocationServices.API)
                 .build()
 
-        _connection = Observable.create { emitter ->
+        _connection = Observable.create<eConnectionResult> { emitter ->
 
             apiClient.registerConnectionCallbacks(
                     object : GoogleApiClient.ConnectionCallbacks {

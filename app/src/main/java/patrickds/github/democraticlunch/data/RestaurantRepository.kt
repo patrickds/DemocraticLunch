@@ -27,30 +27,23 @@ class RestaurantRepository @Inject constructor(
     }
 
     override fun getNearest(radius: Int): Observable<Restaurant> {
-        return Observable.create<Restaurant> { emitter ->
 
-            _electionRepository.getWeekElections()
-                    .defaultIfEmpty(listOf())
-                    .observeOn(Schedulers.io())
-                    .subscribe { elections ->
-                        getNearby(radius)
-                                .observeOn(Schedulers.io())
-                                .subscribe({ restaurant ->
+        val electionsOrEmpty = _electionRepository.getWeekElections()
+                .defaultIfEmpty(listOf())
 
-                                    restaurant.wasSelectedThisWeek = elections.any {
-                                        it.winner.restaurantId == restaurant.id
-                                    }
-                                    emitter.onNext(restaurant)
-                                }, { error ->
-                                    emitter.onError(error)
-                                }, {
-                                    emitter.onComplete()
-                                })
-                    }
-        }
+        return nearbyRestaurants(radius)
+
+//        return Observable.combineLatest(electionsOrEmpty, nearbyRestaurants(radius), BiFunction {
+//            elections: List<Election>, restaurant: Restaurant ->
+//            restaurant.apply {
+//                wasSelectedThisWeek = elections.any {
+//                    it.winner.restaurantId == restaurant.id
+//                }
+//            }
+//        })
     }
 
-    fun getNearby(radius: Int): Observable<Restaurant> {
+    private fun nearbyRestaurants(radius: Int): Observable<Restaurant> {
 
         return _locationService.getLastKnownLocation()
                 .flatMap { location ->
