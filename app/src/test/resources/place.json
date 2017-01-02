@@ -1,0 +1,47 @@
+{
+  "geometry": {
+    "location": {
+      "lat": -29.1577443,
+      "lng": -51.1945214
+    },
+    "viewport": {
+      "northeast": {
+        "lat": -29.15751135,
+        "lng": -51.1944663
+      },
+      "southwest": {
+        "lat": -29.15782195,
+        "lng": -51.19468669999998
+      }
+    }
+  },
+  "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+  "id": "e8b8cbdad8310e2f6673a88bbde3c6f308a8bef1",
+  "name": "Camorra Pizzaria",
+  "opening_hours": {
+    "open_now": false,
+    "weekday_text": []
+  },
+  "photos": [
+    {
+      "height": 5344,
+      "html_attributions": [
+        "\u003ca href=\"https://maps.google.com/maps/contrib/102548280578546989830/photos\"\u003eEngº Marcelo J. Toigo\u003c/a\u003e"
+      ],
+      "photo_reference": "CoQBdwAAAFsqqJFVXB6kFODSxPs5m5P-NW7rFQ29ULW6J-tsQObl9irheZKNXBn56mRusrPya9Py2FLL88o5xBYlveSqrfh0OF8U83omh8piLa2LWmLtvWToUa3fQoYrSpB4NGd8wMMhnS-cB_MX2IJI0n9j_kwY44Zreuk8lgK5q9MYvntHEhAVfjDMiUdB9kiUWWkH7lOJGhQwpQ1Yr7vpc8rl55C8DR3AYlfVYw",
+      "width": 3006
+    }
+  ],
+  "place_id": "ChIJAQAAwMOiHpURPTo3NQYYBRE",
+  "rating": 3.2,
+  "reference": "CmRRAAAAMNbIOE52aLUVY7PJUiUX_qK14NnX2egshZzwrzIWiqIW6Rxq-RpXSAUufGQ3LFeqxUzz26aFV1xfQECLn39atvR6QELs8aXdAOm5VYjLhrVK0mAo7dz5n5QhZO9lyklQEhCG46B0mOl9L-2bho5b-5btGhQk5c29gso2YEGdtHcpy1IDECPYVQ",
+  "scope": "GOOGLE",
+  "types": [
+    "meal_delivery",
+    "restaurant",
+    "food",
+    "point_of_interest",
+    "establishment"
+  ],
+  "vicinity": "Rua Governador Roberto Silveira, 1194 - Santa Catarina, Caxias do Sul"
+}

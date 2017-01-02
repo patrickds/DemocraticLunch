@@ -10,8 +10,8 @@ import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
 import org.mockito.MockitoAnnotations
+import patrickds.github.democraticlunch.RestaurantTestHelper
 import patrickds.github.democraticlunch.RxJavaTest
-import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VoteEntry
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
@@ -63,27 +63,22 @@ class ChooseWinnerAndNotifyUserTest : RxJavaTest() {
     @Test
     fun execute_whenHasVotingShouldNotifyUserAndCreateElection() {
 
-        val winnerId = "2"
         val winnerVotes = 3
+        val restaurant = RestaurantTestHelper.buildRestaurant(winnerVotes, false)
         val entry1 = VoteEntry("1", 0)
-        val entry2 = VoteEntry(winnerId, winnerVotes)
+        val entry2 = VoteEntry(restaurant.id, winnerVotes)
         val entries = listOf(entry1, entry2)
         val hasEnded = false
 
         val voting = Voting(entries, hasEnded)
         val election = voting.electWinner()
 
-        val restaurantWinner = Restaurant(
-                winnerId,
-                "Outback",
-                "221B, Baker Street",
-                winnerVotes)
 
         given(votingRepository.getVotingByDay(Matchers.anyInt()))
                 .willReturn(Observable.just(voting))
 
-        given(restaurantRepository.getById(winnerId))
-                .willReturn(Observable.just(restaurantWinner))
+        given(restaurantRepository.getById(restaurant.id))
+                .willReturn(Observable.just(restaurant))
 
         chooseWinnerAndNotifyUser.execute()
 

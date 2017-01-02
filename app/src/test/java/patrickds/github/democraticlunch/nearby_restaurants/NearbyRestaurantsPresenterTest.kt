@@ -112,7 +112,7 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
     @Test
     fun loadNearbyRestaurantsAskingPermission_WhenHasPermissionAndEmitsItem_PresenterShowsItemInView() {
 
-        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", 0, false, false)
+        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", "", 4.2f, 0, false, false)
 
         val requestValues = GetNearbyRestaurants.RequestValues(5000)
         given(getNearbyRestaurants.execute(requestValues))
@@ -135,7 +135,7 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
     @Test
     fun loadNearbyRestaurantsAskingPermission_WhenDontHavePermissionAndEmitsItem_PresenterDontInteractWithView() {
 
-        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", 0, false, false)
+        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", "", 4.2f, 0, false, false)
 
         val requestValues = GetNearbyRestaurants.RequestValues(5000)
         given(getNearbyRestaurants.execute(requestValues))
@@ -174,7 +174,7 @@ class NearbyRestaurantsPresenterTest : RxJavaTest() {
     @Test
     fun loadLatestChosenRestaurant_WhenEmitsItem_PresenterShowsItemInView() {
 
-        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", 0, false, false)
+        val restaurant = Restaurant("id", "Outback Steak House", "221B, Baker Street", "", 4.2f, 0, false, false)
 
         given(getLastChosenRestaurant.execute())
                 .willReturn(Observable.just(restaurant))

@@ -5,4 +5,6 @@
     <string name="restaurant_already_chosen">This restaurant was already chosen this week</string>
     <string name="vote">VOTE</string>
     <string name="last_chosen_restaurant">Last chosen restaurant</string>
+    <string name="vote_button_description">Vote button</string>
+    <string name="rating_icon_description">Rating icon</string>
 </resources>

@@ -2,7 +2,6 @@ package patrickds.github.democraticlunch.application.injection
 
 import android.content.Context
 import com.jakewharton.picasso.OkHttp3Downloader
-import com.squareup.picasso.OkHttpDownloader
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
@@ -19,8 +18,7 @@ class PicassoModule {
 
     @Provides
     @ApplicationScope
-    fun picasso(context: Context, okHttpDownloader: OkHttpDownloader): Picasso {
-        //TODO: add cache file
+    fun picasso(context: Context, okHttpDownloader: OkHttp3Downloader): Picasso {
         return Picasso.Builder(context)
                 .downloader(okHttpDownloader)
                 .build()

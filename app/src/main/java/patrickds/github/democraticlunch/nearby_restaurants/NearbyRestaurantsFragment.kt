@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nearby_restaurants_fragment.*
 import kotlinx.android.synthetic.main.nearby_restaurants_fragment.view.*
 import patrickds.github.democraticlunch.R
@@ -21,8 +22,8 @@ import javax.inject.Inject
 
 class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
 
-    @Inject
-    lateinit var _presenter: NearbyRestaurantsContract.Presenter
+    @Inject lateinit var _presenter: NearbyRestaurantsContract.Presenter
+    @Inject lateinit var _picasso: Picasso
 
     private lateinit var _swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var _nearbyRestaurantsAdapter: NearbyRestaurantsAdapter
@@ -41,7 +42,7 @@ class NearbyRestaurantsFragment : Fragment(), NearbyRestaurantsContract.View {
                 .build()
                 .inject(this)
 
-        _nearbyRestaurantsAdapter = NearbyRestaurantsAdapter(mutableListOf())
+        _nearbyRestaurantsAdapter = NearbyRestaurantsAdapter(mutableListOf(), _picasso)
         _nearbyRestaurantsList = view.nearby_restaurants_list
         _nearbyRestaurantsList.layoutManager = LinearLayoutManager(activity)
         _nearbyRestaurantsList.adapter = _nearbyRestaurantsAdapter

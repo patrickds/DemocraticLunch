@@ -2,12 +2,15 @@ package patrickds.github.democraticlunch.nearby_restaurants
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.squareup.picasso.Picasso
 import patrickds.github.democraticlunch.R
 import patrickds.github.democraticlunch.extensions.ViewGroupExtensions.inflate
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.VotingUpdate
 
-class NearbyRestaurantsAdapter(var _restaurants: MutableList<Restaurant>) :
+class NearbyRestaurantsAdapter(
+        private var _restaurants: MutableList<Restaurant>,
+        private val _picasso: Picasso) :
         RecyclerView.Adapter<RestaurantItemViewHolder>() {
 
     private var _isEnable = true
@@ -16,7 +19,7 @@ class NearbyRestaurantsAdapter(var _restaurants: MutableList<Restaurant>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantItemViewHolder {
         val view = parent.inflate(R.layout.nearby_restaurants_list_item)
-        return RestaurantItemViewHolder(view)
+        return RestaurantItemViewHolder(view, _picasso)
     }
 
     override fun onBindViewHolder(holder: RestaurantItemViewHolder, position: Int) {

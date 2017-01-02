@@ -1,8 +1,10 @@
 package patrickds.github.democraticlunch.application
 
+import com.squareup.picasso.Picasso
 import dagger.Component
 import patrickds.github.democraticlunch.application.injection.ApplicationScope
 import patrickds.github.democraticlunch.application.injection.GoogleServicesModule
+import patrickds.github.democraticlunch.application.injection.PicassoModule
 import patrickds.github.democraticlunch.application.injection.RepositoryModule
 import patrickds.github.democraticlunch.google.playservices.GooglePlayServices
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
@@ -11,12 +13,16 @@ import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.I
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 
 @ApplicationScope
-@Component(modules = arrayOf(RepositoryModule::class, GoogleServicesModule::class))
+@Component(modules = arrayOf(
+        RepositoryModule::class,
+        GoogleServicesModule::class,
+        PicassoModule::class))
 interface DemocraticLunchApplicationComponent {
     val votedRestaurantRepository: IVotedRestaurantsDataSource
     val restaurantRepository: IRestaurantRepository
     val rankingRepository: IVotingRepository
     val electionRepository: IElectionRepository
     val googlePlayServices: GooglePlayServices
+    val picasso: Picasso
 }
 

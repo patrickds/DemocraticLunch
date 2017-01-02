@@ -10,9 +10,12 @@ class RestaurantItemContract {
         fun showRestaurantName(name: String)
         fun showRestaurantAddress(address: String)
         fun showRestaurantVotes(votes: String)
+        fun showRating(rating: String)
+        fun loadImageFromUrl(photoUrl: String)
+        fun loadImageFromUrlInGrayScale(photoUrl: String)
 
-        fun showVoteText()
-        fun showUnVoteText()
+        fun showVote()
+        fun showUnVote()
     }
 
     interface Presenter {

@@ -6,7 +6,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
+import patrickds.github.democraticlunch.RestaurantTestHelper
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantsDataSource
 import patrickds.github.democraticlunch.restaurant_election.domain.repositories.IVotingRepository
 
@@ -32,18 +32,13 @@ class VoteOnRestaurantTest {
 
     @Test
     fun execute_WhenRestaurantIsNotVoted_VoteOnRestaurantUpdateRepoAndInsertIntoCache() {
-        val restaurant = Restaurant("id",
-                "Outback",
-                "221B, Baker Street",
-                2,
-                false,
-                false)
+        val restaurant = RestaurantTestHelper.buildDefaultRestaurant()
 
         val requestValues = VoteOnRestaurant.RequestValues(restaurant)
         voteOnRestaurant.execute(requestValues)
 
         assertTrue(restaurant.isVoted)
-        assertEquals(3, restaurant.votes)
+        assertEquals(1, restaurant.votes)
         verify(votingRepository).insertOrUpdate(restaurant)
         verify(votedRestaurantsDataSource).insertOrUpdate(restaurant)
     }
@@ -51,18 +46,13 @@ class VoteOnRestaurantTest {
     @Test
     fun execute_WhenRestaurantIsVoted_UnVoteRestaurantUpdateRepoAndUpdateCache(){
 
-        val restaurant = Restaurant("id",
-                "Outback",
-                "221B, Baker Street",
-                3,
-                true,
-                true)
+        val restaurant = RestaurantTestHelper.buildRestaurant(1, true)
 
         val requestValues = VoteOnRestaurant.RequestValues(restaurant)
         voteOnRestaurant.execute(requestValues)
 
         assertFalse(restaurant.isVoted)
-        assertEquals(2, restaurant.votes)
+        assertEquals(0, restaurant.votes)
         verify(votingRepository).insertOrUpdate(restaurant)
         verify(votedRestaurantsDataSource).insertOrUpdate(restaurant)
     }
