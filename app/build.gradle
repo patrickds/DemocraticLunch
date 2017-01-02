@@ -45,6 +45,7 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:2.0.57-beta"
+    testCompile "com.nhaarman:mockito-kotlin:1.1.0"
     testCompile 'joda-time:joda-time:2.9.5'
 
     //Android
