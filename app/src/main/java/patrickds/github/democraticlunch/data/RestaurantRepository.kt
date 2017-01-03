@@ -1,12 +1,14 @@
 package patrickds.github.democraticlunch.data
 
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import patrickds.github.democraticlunch.BuildConfig
 import patrickds.github.democraticlunch.extensions.LocationExtensions.formatToApi
 import patrickds.github.democraticlunch.google.places.IGoogleWebService
 import patrickds.github.democraticlunch.google.places.ePlaceType
 import patrickds.github.democraticlunch.location.LocationService
+import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Election
 import patrickds.github.democraticlunch.nearby_restaurants.domain.model.Restaurant
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IElectionRepository
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IRestaurantRepository
@@ -31,16 +33,14 @@ class RestaurantRepository @Inject constructor(
         val electionsOrEmpty = _electionRepository.getWeekElections()
                 .defaultIfEmpty(listOf())
 
-        return nearbyRestaurants(radius)
-
-//        return Observable.combineLatest(electionsOrEmpty, nearbyRestaurants(radius), BiFunction {
-//            elections: List<Election>, restaurant: Restaurant ->
-//            restaurant.apply {
-//                wasSelectedThisWeek = elections.any {
-//                    it.winner.restaurantId == restaurant.id
-//                }
-//            }
-//        })
+        return Observable.combineLatest(electionsOrEmpty, nearbyRestaurants(radius), BiFunction {
+            elections: List<Election>, restaurant: Restaurant ->
+            restaurant.apply {
+                wasSelectedThisWeek = elections.any {
+                    it.winner.restaurantId == restaurant.id
+                }
+            }
+        })
     }
 
     private fun nearbyRestaurants(radius: Int): Observable<Restaurant> {
