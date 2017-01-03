@@ -7,11 +7,10 @@ import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import patrickds.github.democraticlunch.RxJavaInstrumentationTest
 import patrickds.github.democraticlunch.google.playservices.GooglePlayServices
 
 @RunWith(AndroidJUnit4::class)
-class LocationServiceTest : RxJavaInstrumentationTest() {
+class LocationServiceIntegrationTest {
 
     lateinit var locationService: LocationService
 
