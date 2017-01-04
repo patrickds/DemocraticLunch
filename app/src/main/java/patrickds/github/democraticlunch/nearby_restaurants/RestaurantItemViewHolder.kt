@@ -44,6 +44,7 @@ class RestaurantItemViewHolder(
 
     override fun reset() {
         _restaurantAlreadyChosenTextView.visibility = View.GONE
+        _votesTextView.visibility = View.VISIBLE
         _voteButton.visibility = View.VISIBLE
         _voteButton.isClickable = false
         _voteButton.setBackgroundResource(R.color.colorPrimary)
@@ -85,15 +86,16 @@ class RestaurantItemViewHolder(
 
     override fun showAlreadySelectedMessage() {
         _voteButton.visibility = View.GONE
+        _votesTextView.visibility = View.GONE
         _restaurantAlreadyChosenTextView.visibility = View.VISIBLE
     }
 
     override fun showVote() {
-//        _voteButton.text = "VOTE"
+        //Todo: change button's color
     }
 
     override fun showUnVote() {
-//        _voteButton.text = "UNVOTE"
+        //Todo: change button's color
     }
 
     fun disable() {
