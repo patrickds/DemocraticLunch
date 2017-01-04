@@ -30,8 +30,7 @@ class GooglePlaceDAO() {
         if (photos != null && photos!!.count() > 0)
             reference = photos!!.first().photo_reference!!
 
-        val votes = 0
-        val isVoted = _votedRestaurantsCache.getIsVoted(place_id!!)
+        val voteCache = _votedRestaurantsCache.getById(place_id!!)
 
         return Restaurant(
                 place_id!!,
@@ -39,8 +38,8 @@ class GooglePlaceDAO() {
                 vicinity!!,
                 reference,
                 rating!!,
-                votes,
-                isVoted)
+                voteCache.votes,
+                voteCache.isVoted)
     }
 
 }

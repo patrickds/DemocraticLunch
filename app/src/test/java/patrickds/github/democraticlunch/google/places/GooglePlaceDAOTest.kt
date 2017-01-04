@@ -5,9 +5,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.BDDMockito.given
-import org.mockito.Matchers
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import patrickds.github.democraticlunch.data.dao.RestaurantDAO
 import patrickds.github.democraticlunch.nearby_restaurants.domain.repositories.IVotedRestaurantsDataSource
 
 class GooglePlaceDAOTest {
@@ -51,6 +51,8 @@ class GooglePlaceDAOTest {
         val name = "Outback Steak House"
         val address = "221B, Baker Street"
         val rating = 3.7f
+        val isVoted = false
+        val votes = 3
 
         val photo = PlacePhotoDAO(400, 400, "Reference")
         val photos = listOf(photo)
@@ -62,8 +64,8 @@ class GooglePlaceDAOTest {
                 rating,
                 photos)
 
-        given(votedRestaurantsCache.getIsVoted(Matchers.anyString()))
-                .willReturn(false)
+        given(votedRestaurantsCache.getById(id))
+                .willReturn(RestaurantDAO(id, isVoted, votes))
 
         val restaurant = placeDao.toDomain(votedRestaurantsCache)
 
@@ -71,6 +73,8 @@ class GooglePlaceDAOTest {
         assertEquals(name, restaurant.name)
         assertEquals(address, restaurant.address)
         assertEquals(rating, restaurant.rating)
+        assertEquals(isVoted, restaurant.isVoted)
+        assertEquals(votes, restaurant.votes)
         assertEquals(photo.photo_reference, restaurant.photoReference)
     }
 }

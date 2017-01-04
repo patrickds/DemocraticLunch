@@ -11,14 +11,14 @@ class VotedRestaurantsCache @Inject constructor() : IVotedRestaurantsDataSource 
     override fun insertOrUpdate(restaurant: Restaurant) {
         val realm = Realm.getDefaultInstance()
 
-        val restaurantEntity = RestaurantDAO(restaurant.id, restaurant.isVoted)
+        val restaurantEntity = RestaurantDAO(restaurant.id, restaurant.isVoted, restaurant.votes)
 
         realm.executeTransaction {
             it.insertOrUpdate(restaurantEntity)
         }
     }
 
-    override fun getIsVoted(id: String): Boolean {
+    override fun getById(id: String): RestaurantDAO {
         val realm = Realm.getDefaultInstance()
 
         val contains = realm.where(RestaurantDAO::class.java)
@@ -26,12 +26,11 @@ class VotedRestaurantsCache @Inject constructor() : IVotedRestaurantsDataSource 
                 .count() > 0
 
         if (!contains)
-            return false
+            return RestaurantDAO("", false, 0)
 
         return realm.where(RestaurantDAO::class.java)
                 .equalTo("id", id)
                 .findFirst()
-                .isVoted
     }
 
     override fun clear() {
