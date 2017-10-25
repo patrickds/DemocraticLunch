@@ -1,13 +1,5 @@
 # DemocraticLunch
 
-## What's New
-
-* Automated Tests
-
-* Runtime Permissions
-
-* Improved UI
-
 ## Code Challenge
 
 This is the result of a code challenge started 20/12/2016 and ended 23/12/2016, taking 4 days to complete.
@@ -84,12 +76,3 @@ that gives a very good realiability and ease of development, Retrofit for easy R
 * #### Settings
 
 * ####  Charts ?
-
-## Future and Review
-
-This branch will remain untouched untill the code is reviewed but I really enjoyed doing this challenge and so I will finish it in another branch.
-Perhaps in the day this is reviewed the other branch will be finished already, so feel free to check out there how it went.
-
-#### Review
-
-I would be very very happy if the reviewer told me his critics through issues or email (patrickds@outlook.com) so I can improve my work :)
